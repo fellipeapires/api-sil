@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:th="http://www.thymeleaf.org">
+    
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+    <link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
+
+    <!-- use the font -->
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            font-size: 20px;
+        }
+    </style>
+</head>
+ 
+<body style="margin: 0; padding: 0;">
+
+<table align="center" border="0" cellpadding="0" cellspacing="0" width="100%" style="border-collapse: collapse;">
+        <tr>
+            <td align="center" style="padding: 40px 0 30px 0;">
+               <h2>Floripark - SILGAS</h2>
+            </td>
+        </tr>
+        <tr>
+            <td bgcolor="#eaeaea" style="padding: 40px 30px 40px 30px;">
+                <p th:text="${nome}">
+                <p>Seguem dados de acesso ao sistema SILGAS!</b></br></br></p>
+                <p th:text="${login}"></p>
+                <p th:text="${senha}"></b></br></br></p>
+                <p style="text-align:center">Link:</p>
+                <p style="text-align:center" th:text="@{https://comgas.grupofloripark.com.br}"></b></br></br></p>
+                <p>
+                	Caso deseje alterar sua senha de acesso, clique em “Configuracao” no menu principal, preencha os campos “Nova Senha” e “Confirmar Senha”, depois é só clicar em salvar.
+                </p>
+                <p>Não responda essa mensagem por favor, pois é um e-mail automático e não monitorado!</p>
+                <p>
+                	Esta mensagem é enviada exclusivamente a seu destinatário e pode conter informações confidenciais, protegidas por sigilo profissional.
+					Sua utilização desautorizada é ilegal e sujeita o infrator às penas da lei.
+				</p>
+				<p>
+					This message is directed exclusively to its addressee and may contain confidential data, protected under professional secrecy rules.
+					Its unauthorized use is illegal and may subject the transgressor to the law's penalties.
+				</p>
+            </td>
+            <td>
+            	<p ></p>
+            </td>
+        </tr>
+        
+</table>
+
+</body>
+</html>
