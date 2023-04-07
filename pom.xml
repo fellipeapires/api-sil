@@ -13,7 +13,7 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
 	<name>api-sil</name>
-	<description>projeto atualizacao GF-SIL</description>
+	<description>projeto atualizacao SIL</description>
 	<properties>
 		<java.version>11</java.version>
 	</properties>
@@ -31,7 +31,7 @@
 		<dependency>
 			<groupId>org.flywaydb</groupId>
 			<artifactId>flyway-core</artifactId>
-			<version>5.2.4</version>
+			 <version>7.8.0</version>
 		</dependency>
 		
 		<dependency>
