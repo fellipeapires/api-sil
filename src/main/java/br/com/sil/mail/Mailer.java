@@ -35,7 +35,7 @@ public class Mailer {
 		variaveis.put("login", "Login: " + usuario.getLogin());
 		variaveis.put("senha", "Senha: " + senha);
 		List<String> emails = destinatarios.stream().map(u -> u.getEmail()).collect(Collectors.toList());
-		this.enviarEmail("desenv2@floripark.com.br", emails, assunto, template, variaveis);
+		this.enviarEmail("dev@felltech.com.br", emails, assunto, template, variaveis);
 	}
 
 //	Chamadas Padrão
