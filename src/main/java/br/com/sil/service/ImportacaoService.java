@@ -4,6 +4,7 @@ import java.io.FileInputStream;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
@@ -105,6 +106,7 @@ public class ImportacaoService implements IImportacaoService {
 		int percentual = 0;
 		String instalacao = "";
 		String tipoArquivo = arquivo.getOriginalFilename();
+		List<Leitura> listaLeitura = new ArrayList<Leitura>();
 		try {
 			while (scannerHeader.hasNextLine()) {
 				linhaHeader = scannerHeader.nextLine();
@@ -227,14 +229,15 @@ public class ImportacaoService implements IImportacaoService {
 							leitura.setFaixaMinima(0);
 						}
 						leitura.setFaixaMaxima(leitura.getUltimaLeitura() + ((leitura.getMedia3Meses() * percentual) / 100)); 
-						this.leituraService.incluir(leitura);
+						//this.leituraService.incluir(leitura);
+						listaLeitura.add(leitura);
 					}
 					
 				}
 			}
 
 			//DaoFactory.getLeituraDao().semTarefa(idImportacao); // => DESCOMENTAR
-			
+			this.leituraService.saveAll(listaLeitura);
 			importacaoSalva.setObservacao("importado com sucesso!");
 			importacaoSalva.setQtdImportacao(qtdImportada);
 			this.importacaoRepository.save(importacaoSalva);

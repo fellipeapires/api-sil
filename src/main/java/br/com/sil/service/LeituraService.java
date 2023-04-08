@@ -22,6 +22,10 @@ public class LeituraService implements ILeituraService {
 	public Leitura incluir(Leitura entity) {
 		return this.leituraRepository.save(entity);
 	}
+	
+	public void saveAll(List<Leitura> lista) {
+		this.leituraRepository.saveAll(lista);
+	}
 
 	@Override
 	public Leitura alterar(Leitura entity) {
