@@ -28,14 +28,14 @@ public class SwaggerConfig {
 	
 	private ApiInfo apiInfo() {
 		return new ApiInfoBuilder()
-				.title("GFSIL")
-				.description("Api sistema de leitura Comgas")
+				.title("SIL")
+				.description("Api Sistema de Leitura de Gas")
 				.version("0.0.1")
 				.contact(contact())
 				.build();
 	}
 	
 	private Contact contact() {
-		return new Contact("Fellipe, Maicon","","ti@floripark.com.br");
+		return new Contact("Fellipe","","dev@felltech.com.br");
 	}
 }

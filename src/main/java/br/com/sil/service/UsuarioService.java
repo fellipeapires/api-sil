@@ -15,6 +15,7 @@ import br.com.sil.model.Usuario;
 import br.com.sil.model.dto.AcessoDto;
 import br.com.sil.repository.UsuarioRepository;
 import br.com.sil.repository.filter.UsuarioFilter;
+import br.com.sil.repository.projection.UsuarioMobileProjection;
 import br.com.sil.service.interfaces.IUsuarioService;
 import br.com.sil.util.Utility;
 
@@ -124,6 +125,10 @@ public class UsuarioService implements IUsuarioService {
 		} else {
 			return null;
 		}
+	}
+	
+	public List<UsuarioMobileProjection> getUsuariosMobile() {
+		return this.usuarioRepository.getUsuariosMobile();
 	}
 
 }
