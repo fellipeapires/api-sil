@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import br.com.sil.model.Ocorrencia;
 import br.com.sil.repository.OcorrenciaRepository;
 import br.com.sil.repository.filter.OcorrenciaFilter;
+import br.com.sil.repository.projection.OcorrenciaProjection;
 import br.com.sil.service.interfaces.IOcorrenciaService;
 
 @Service
@@ -39,6 +40,10 @@ public class OcorrenciaService implements IOcorrenciaService {
 	
 	public Optional<Ocorrencia> findByCodigo(int codigo) {
 		return this.ocorrenciaRepository.findByCodigo(codigo);
+	}
+	
+	public List<OcorrenciaProjection> getListaMobile() {
+		return this.ocorrenciaRepository.getListaMobile();
 	}
 
 }

@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.sil.model.Ocorrencia;
 import br.com.sil.repository.filter.OcorrenciaFilter;
+import br.com.sil.repository.projection.OcorrenciaProjection;
 import br.com.sil.resource.interfaces.IOcorrenciaResource;
 import br.com.sil.service.OcorrenciaService;
 
@@ -51,5 +52,11 @@ public class OcorrenciaResource implements IOcorrenciaResource {
 	public ResponseEntity<?> pesquisar(OcorrenciaFilter filter) {
 		List<Ocorrencia> lista = this.ocorrenciaService.pesquisar(filter);
 		return new ResponseEntity<List<Ocorrencia>>(lista, HttpStatus.OK);
+	}
+	
+	@GetMapping("/listaMobile")
+	public ResponseEntity<?> getListaMobile() {
+		List<OcorrenciaProjection> lista = this.ocorrenciaService.getListaMobile();
+		return new ResponseEntity<List<OcorrenciaProjection>>(lista, HttpStatus.OK);
 	}
 }

@@ -20,34 +20,25 @@ import lombok.ToString;
 @Getter
 @Setter
 @Entity
-@Table(name = "MED_OCORRENCIA")
-public class Ocorrencia implements Serializable {
+@Table(name = "CAD_PERGUNTA_APR")
+public class PerguntaApr implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 	@EqualsAndHashCode.Include
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "ID_OCORRENCIA")
+	@Column(name = "ID_PERGUNTA_APR")
 	private Long id;
 	
-	@NotNull
-	@Column(name = "CD_OCORRENCIA")
-	private Integer codigo;
+	@Column(name = "NR_PERGUNTA_APR")
+	private int numeroPergunta;
 	
-	@NotNull
-	@Column(name = "NM_NOME")
-	private String nome;
+	@Column(name = "DS_PERGUNTA_APR")
+	private String pergunta;
 	
 	@NotNull
 	@Column(name = "CD_SITUACAO")
 	private int situacao;
-	
-	@NotNull
-	@Column(name = "FL_TIPO_OCORRENCIA")
-	private Integer tipoOcorrencia;
-	
-	@NotNull
-	@Column(name = "FL_USO_MOBILE")
-	private Integer usoMobile;
 }
+
