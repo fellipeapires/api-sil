@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.sil.model.Distribuicao;
 import br.com.sil.model.dto.DistribuicaoDto;
 import br.com.sil.repository.filter.DistribuicaoFilter;
+import br.com.sil.repository.projection.CargaMobileProjection;
 import br.com.sil.repository.projection.DistribuicaoProjection;
 import br.com.sil.repository.projection.DistribuidoProjection;
 import br.com.sil.resource.interfaces.IDistribuicaoResource;
@@ -96,5 +97,23 @@ public class DistribuicaoResource implements IDistribuicaoResource {
 	public ResponseEntity<?> liberarCarga(@RequestBody DistribuicaoDto entity) {
 		int qtd = this.distribuicaoService.liberarCarga(entity);
 		return new ResponseEntity<Integer>(qtd, HttpStatus.OK);
+	}
+	
+	@GetMapping("/desassociadomobile/{idUsuario}")
+	public ResponseEntity<?> getDesassociadoMobile(@PathVariable("idUsuario") long idUsuario) {
+		List<Long> lista = this.distribuicaoService.getDesassociadoMobile(idUsuario);
+		return new ResponseEntity<List<Long>>(lista, HttpStatus.OK);
+	}
+	
+	@GetMapping("/cargamobile/{idUsuario}")
+	public ResponseEntity<?> getCargaMobile(@PathVariable("idUsuario") long idUsuario) {
+		List<CargaMobileProjection> lista = this.distribuicaoService.getCargaMobile(idUsuario);
+		return new ResponseEntity<List<CargaMobileProjection>>(lista, HttpStatus.OK);
+	}
+	
+	@PutMapping("/alterarassociadomobile")
+	public ResponseEntity<?> alterarAssociadoMobile(@RequestBody DistribuicaoDto entity) {
+		this.distribuicaoService.alterarAssociadoMobile(entity);
+		return new ResponseEntity<Boolean>(true, HttpStatus.OK);
 	}
 }

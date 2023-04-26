@@ -11,6 +11,7 @@ import br.com.sil.model.TipoDistribuicao;
 import br.com.sil.model.dto.DistribuicaoDto;
 import br.com.sil.repository.DistribuicaoRepository;
 import br.com.sil.repository.filter.DistribuicaoFilter;
+import br.com.sil.repository.projection.CargaMobileProjection;
 import br.com.sil.repository.projection.DesassociadoProjection;
 import br.com.sil.repository.projection.DistribuicaoProjection;
 import br.com.sil.repository.projection.DistribuidoProjection;
@@ -94,6 +95,18 @@ public class DistribuicaoService implements IDistribuicaoService {
 	
 	public Integer liberarCarga(DistribuicaoDto entity) {
 		return this.distribuicaoRepository.liberarCarga(entity.getDataReferencia(), entity.getIdRegional(), entity.getGrupoFaturamento(), entity.getTarefa(), entity.getIdUsuario(), StatusDistribuicao.LIBERADO.getCodigo(), StatusDistribuicao.NAO_LIBERADO.getCodigo());
+	}
+	
+	public List<Long> getDesassociadoMobile(Long idUsuario) {
+		return this.distribuicaoRepository.getDesassociadoMobile(idUsuario);
+	}
+	
+	public List<CargaMobileProjection> getCargaMobile(Long idUsuario) {
+		return this.distribuicaoRepository.getCargaMobile(idUsuario);
+	}
+	
+	public void alterarAssociadoMobile(DistribuicaoDto entity) {
+		this.distribuicaoRepository.alterarAssociadoMobile(entity.getIdUsuario(), entity.getListaIdLeitura());
 	}
 
 }
