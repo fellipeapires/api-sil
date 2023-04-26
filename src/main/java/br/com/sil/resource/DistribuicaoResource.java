@@ -116,4 +116,10 @@ public class DistribuicaoResource implements IDistribuicaoResource {
 		this.distribuicaoService.alterarAssociadoMobile(entity);
 		return new ResponseEntity<Boolean>(true, HttpStatus.OK);
 	}
+	
+	@PostMapping("/zerardesassociadomobile")
+	public ResponseEntity<?> zerarDesassociadoMobile(@RequestBody DistribuicaoDto entity) {
+		this.distribuicaoService.zerarDesassociadoMobile(entity);
+		return new ResponseEntity<Boolean>(true, HttpStatus.OK);
+	}
 }

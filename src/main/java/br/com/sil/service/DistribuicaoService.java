@@ -108,5 +108,9 @@ public class DistribuicaoService implements IDistribuicaoService {
 	public void alterarAssociadoMobile(DistribuicaoDto entity) {
 		this.distribuicaoRepository.alterarAssociadoMobile(entity.getIdUsuario(), entity.getListaIdLeitura());
 	}
+	
+	public void zerarDesassociadoMobile(DistribuicaoDto entity) {
+		this.distribuicaoRepository.zerarDesassociadoMobile(entity.getIdUsuario(), entity.getListaIdLeitura());
+	}
 
 }

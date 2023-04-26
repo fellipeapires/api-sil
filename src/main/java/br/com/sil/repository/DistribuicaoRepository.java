@@ -208,4 +208,9 @@ public interface DistribuicaoRepository extends JpaRepository<Distribuicao, Long
 	@Query(value="UPDATE MED_DISTRIBUICAO_LEITURA_REGISTRO SET FL_ASSOCIADO = 1 WHERE ID_USUARIO = ?1 AND ID_LEITURA IN(?2)", nativeQuery = true)
 	public void alterarAssociadoMobile(long idUsuario, List<Long> listaIdLeitura);
 	
+	@Modifying
+	@Transactional
+	@Query(value="DELETE MED_DESASSOCIADO WHERE ID_USUARIO = ?1 AND ID_LEITURA IN(?2)", nativeQuery = true)
+	public void zerarDesassociadoMobile(long idUsuario, List<Long> listaIdLeitura);
+	
 }
