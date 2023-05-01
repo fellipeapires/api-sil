@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.sil.model.RetornoLeitura;
 import br.com.sil.model.dto.RetornoLeituraDto;
+import br.com.sil.model.dto.RetornoLeituraMobileDto;
 import br.com.sil.repository.filter.RetornoLeituraFilter;
 import br.com.sil.repository.projection.AcompanhamentoDetailProjection;
 import br.com.sil.repository.projection.AcompanhamentoProjection;
@@ -35,6 +36,12 @@ public class RetornoLeituraResource implements IRetornoLeituraResource {
 	public ResponseEntity<?> incluir(RetornoLeitura entity) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	
+	@PostMapping("/lancarleituramobile")
+	public ResponseEntity<?> lancarLeituraMobile(@RequestBody List<RetornoLeituraMobileDto> entity) {
+		List<Long> listaId = this.retornoLeituraService.lancarLeituraMobile(entity);
+		return new ResponseEntity<List<Long>>(listaId, HttpStatus.CREATED);
 	}
 	
 	@PostMapping("/lancarleitura")
