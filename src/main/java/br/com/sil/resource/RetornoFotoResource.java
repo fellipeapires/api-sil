@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.sil.config.ApiProperty;
 import br.com.sil.model.RetornoFoto;
+import br.com.sil.model.dto.RetornoFotoDto;
 import br.com.sil.repository.filter.RetornoFotoFilter;
 import br.com.sil.repository.projection.RetornoFotoProjection;
 import br.com.sil.resource.interfaces.IRetornoFotoResource;
@@ -89,6 +90,12 @@ public class RetornoFotoResource implements IRetornoFotoResource {
 	@Produces("application/zip")
 	public HttpEntity<byte[]> baixarZipImagens(@PathVariable("idRetornoFoto") long idRetornoFoto, @PathVariable("idUsuarioAlteracao") long idUsuarioAlteracao) throws Exception {
 		return this.retornoFotoService.baixarZipImagens(idRetornoFoto, idUsuarioAlteracao);
+	}
+	
+	@PostMapping("/uploadmobile")
+	public ResponseEntity<?> uploadMobile(@RequestBody List<RetornoFotoDto> listaFoto) throws Exception {
+		List<String> lista = this.retornoFotoService.uploadMobile(listaFoto);
+		return new ResponseEntity<List<String>>(lista, HttpStatus.OK);
 	}
 
 }

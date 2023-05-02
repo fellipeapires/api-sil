@@ -99,8 +99,8 @@ public class RetornoLeituraService implements IRetornoLeituraService {
 					retornoLeitura.setFlagCritica(RetornoLeituraInfo.NAO_ANALIZADO.getCodigo());
 					retornoLeitura.setObservacao(retornoMobile.getObservacao() != null ? retornoMobile.getObservacao() : "");
 					retornoLeitura.setFlagMedia(0);
-					//retornoLeitura.setIsFoto(entity.getQtdFoto() > 0 ? RetornoLeituraInfo.COM_FOTO.getCodigo() : RetornoLeituraInfo.SEM_FOTO.getCodigo());
-					retornoLeitura.setIsFoto(0);
+					retornoLeitura.setIsFoto(retornoMobile.getIsFoto() > 0 ? RetornoLeituraInfo.COM_FOTO.getCodigo() : RetornoLeituraInfo.SEM_FOTO.getCodigo());
+					//retornoLeitura.setIsFoto(retornoMobile.getIsFoto());
 					retornoLeitura.setAtivo(StatusRegitro.ATIVO.getCodigo());
 					//RetornoLeitura retornoLeituraSalvo = this.retornoLeituraRepository.save(retornoLeitura);
 					/*if (retornoLeituraSalvo != null) {
