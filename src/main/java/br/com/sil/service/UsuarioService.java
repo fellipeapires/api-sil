@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 
 import br.com.sil.mail.Mailer;
 import br.com.sil.model.PerfilAcesso;
-import br.com.sil.model.Permissao;
 import br.com.sil.model.Usuario;
 import br.com.sil.model.dto.AcessoDto;
 import br.com.sil.repository.UsuarioRepository;
@@ -30,7 +29,7 @@ public class UsuarioService implements IUsuarioService {
 	private PerfilAcessoService perfilAcessoService;
 	
 	@Autowired
-	private PermissaoService PermissaoService;
+	private PermissaoService permissaoService;
 
 	@Autowired
 	private Mailer mailer;
@@ -45,17 +44,15 @@ public class UsuarioService implements IUsuarioService {
 	@Override
 	public Usuario incluir(Usuario entity) {
 		if (entity.getId() == null) {
-			Permissao permissao = null;
 			PerfilAcesso perfilAcesso = this.perfilAcessoService.buscarPorId(entity.getPerfilAcesso().getId());
 			String senha = "";
 			Usuario usuario = null;
 			if (!perfilAcesso.getNome().equals("MOBILE")) {
 				if (perfilAcesso.getNome().equals("CLIENTE"))  {
-					permissao = this.PermissaoService.findByNome("ROLE_PAINEL_CLIENTE").get();
+					entity.getPermissoes().get(0).setId(this.permissaoService.findByNome("ROLE_PAINEL_CLIENTE").get().getId());
 				} else {
-					permissao = this.PermissaoService.findByNome("ROLE_HOME").get();
+					entity.setPermissoes(this.permissaoService.getPermissoesCrudUser());
 				}
-				entity.getPermissoes().get(0).setId(permissao.getId());
 				BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 				senha = this.utility.gerarSenha(6);
 				entity.setSenha(encoder.encode(senha.trim()));

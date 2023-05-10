@@ -43,5 +43,9 @@ public class PermissaoService implements IPermissaoService {
 	public Optional<Permissao> findByNome(String nome) {
 		return this.permissaoRepository.findByNome(nome);
 	}
+	
+	public List<Permissao> getPermissoesCrudUser() {
+		return this.permissaoRepository.getPermissoesCrudUser();
+	}
 
 }
