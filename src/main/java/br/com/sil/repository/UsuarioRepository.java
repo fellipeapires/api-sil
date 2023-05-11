@@ -33,4 +33,29 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long>, Usuario
 			+ "INNER JOIN SEG_USUARIO_REGIONAL AS C ON C.ID_USUARIO = A.ID_USUARIO "
 			+ "WHERE A.CD_SITUACAO = 1 AND B.CD_SITUACAO = 1 AND B.NM_NOME = 'MOBILE' ", nativeQuery = true)
 	public List<UsuarioMobileProjection> getUsuariosMobile();
+	
+	/*
+	"SELECT\r\n"
+	+ "	 A.NM_NOME		AS USUARIO\r\n"
+	+ "	,B.NM_NOME		AS PERFIL_ACESSO\r\n"
+	+ "	,CAST(E.DT_ACESSO AS DATE)	AS DATA_ACESSO\r\n"
+	+ "	,CONVERT(CHAR(8), MIN(E.DT_ACESSO), 108)	AS PRIMEIRO_ACESSO\r\n"
+	+ "	,CONVERT(CHAR(8), MAX(E.DT_ACESSO), 108) AS ULTIMO_ACESSO\r\n"
+	+ "	,E.NR_IP		AS IP_ACESSO\r\n"
+	+ "	,MAX(E.NM_BROWSER)	AS ACESSO_ULTIMO_BROWSER\r\n"
+	+ "	,COUNT(*) AS QTD\r\n"
+	+ "FROM \r\n"
+	+ "	SEG_USUARIO AS A\r\n"
+	+ "	INNER JOIN SEG_PERFIL_ACESSO AS B ON B.ID_PERFIL_ACESSO = A.ID_PERFIL_ACESSO\r\n"
+	+ "	INNER JOIN SEG_USUARIO_REGIONAL AS C ON C.ID_USUARIO = A.ID_USUARIO\r\n"
+	+ "	INNER JOIN CAD_REGIONAL AS D ON D.ID_REGIONAL = C.ID_REGIONAL\r\n"
+	+ "	INNER JOIN LOG_ACESSO AS E ON E.ID_USUARIO = A.ID_USUARIO\r\n"
+	+ "GROUP BY \r\n"
+	+ "	 A.NM_NOME\r\n"
+	+ "	,B.NM_NOME\r\n"
+	+ "	,CAST(E.DT_ACESSO AS DATE)\r\n"
+	+ "	,E.NR_IP\r\n"
+	+ "ORDER BY\r\n"
+	+ "	 CAST(E.DT_ACESSO AS DATE) DESC"
+	*/
 }
