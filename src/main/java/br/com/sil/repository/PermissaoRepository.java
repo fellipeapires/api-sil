@@ -20,7 +20,7 @@ public interface PermissaoRepository extends JpaRepository<Permissao, Long>, Per
 			+ "'ROLE_PESQUISAR',"
 			+ "'ROLE_LEITURA',"
 			+ "'ROLE_RETORNO_LEITURA',"
-			+ "'ROLE_PAINEL_CONFIGURACAO',"
+			//+ "'ROLE_PAINEL_CONFIGURACAO',"
 			+ "'ROLE_HOME',"
 			+ "'ROLE_PESQUISA_RETORNO_LEITURA',"
 			+ "'ROLE_IMPORTACAO',"

@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.sil.model.Usuario;
 import br.com.sil.model.dto.AcessoDto;
 import br.com.sil.repository.filter.UsuarioFilter;
-import br.com.sil.repository.projection.UsuarioMobileProjection;
+import br.com.sil.repository.projection.AcessoSistemaUsuarioProjection;
 import br.com.sil.resource.interfaces.IUsuarioResource;
 import br.com.sil.service.UsuarioService;
 
@@ -74,10 +74,10 @@ public class UsuarioResource implements IUsuarioResource {
 		return new ResponseEntity<Integer>(acesso, HttpStatus.OK);
 	}
 
-	@GetMapping("/usuariomobile")
-	public ResponseEntity<?> getUsuariosMobile() {
-		List<UsuarioMobileProjection> lista = this.usuarioService.getUsuariosMobile();
-		return new ResponseEntity<List<UsuarioMobileProjection>>(lista, HttpStatus.OK);
+	@GetMapping("/listaracessosistema")
+	public ResponseEntity<?> listarAcessoSistema(UsuarioFilter filter) {
+		List<AcessoSistemaUsuarioProjection> lista = this.usuarioService.listarAcessoSistema(filter);
+		return new ResponseEntity<List<AcessoSistemaUsuarioProjection>>(lista, HttpStatus.OK);
 	}
 
 }
