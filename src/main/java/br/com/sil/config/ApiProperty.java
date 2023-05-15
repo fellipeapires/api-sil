@@ -37,7 +37,6 @@ public class ApiProperty {
 		public void setEnableHttps(boolean enableHttps) {
 			this.enableHttps = enableHttps;
 		}
-
 	}
 	
 	@Getter

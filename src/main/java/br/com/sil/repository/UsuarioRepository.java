@@ -66,7 +66,7 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long>, Usuario
 			+ "	INNER JOIN LOG_ACESSO AS E ON E.ID_USUARIO = A.ID_USUARIO "
 			+ "WHERE "
 			+ "	A.ID_USUARIO = ISNULL((CASE WHEN ?1 > 0 THEN ?1 ELSE NULL END), A.ID_USUARIO) "
-			+ " AND CAST(E.DT_ACESSO AS DATE) BETWEEN ?2 AND ?3 "
+			+ " AND CONCAT(CONVERT(CHAR(8), E.DT_ACESSO, 23), '01') = ?2 "
 			+ "GROUP BY "
 			+ "	 A.NM_NOME "
 			+ "	,B.NM_NOME "
@@ -74,6 +74,6 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long>, Usuario
 			+ "	,E.NR_IP "
 			+ "ORDER BY "
 			+ "	 CAST(E.DT_ACESSO AS DATE) DESC", nativeQuery = true)
-	public List<AcessoSistemaUsuarioProjection> listarAcessoSistema(Long idUsuario, LocalDate dataInicio, LocalDate dataFim);
+	public List<AcessoSistemaUsuarioProjection> listarAcessoSistema(Long idUsuario, LocalDate dataReferencia);
 	
 }

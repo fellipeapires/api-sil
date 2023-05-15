@@ -23,9 +23,6 @@ public class UsuarioFilter {
 	
 	@JsonFormat(pattern = "yyyy-MM-dd", shape = JsonFormat.Shape.STRING)
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	private LocalDate dataInicio;
+	private LocalDate dataReferencia;
 	
-	@JsonFormat(pattern = "yyyy-MM-dd", shape = JsonFormat.Shape.STRING)
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	private LocalDate dataFim;
 }

@@ -141,7 +141,7 @@ public class UsuarioService implements IUsuarioService {
 	}
 	
 	public List<AcessoSistemaUsuarioProjection> listarAcessoSistema(UsuarioFilter filter) {
-		return this.usuarioRepository.listarAcessoSistema(filter.getIdUsuario(), filter.getDataInicio(), filter.getDataFim());
+		return this.usuarioRepository.listarAcessoSistema(filter.getIdUsuario(), filter.getDataReferencia());
 		
 	}
 
