@@ -6,6 +6,7 @@ import java.util.Optional;
 import javax.transaction.Transactional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
 import br.com.sil.model.Permissao;
@@ -40,4 +41,66 @@ public interface PermissaoRepository extends JpaRepository<Permissao, Long>, Per
 			+ "'ROLE_AUDITORIA',"
 			+ "'ROLE_JORNADA_COLABORADOR') AND CD_SITUACAO = 1", nativeQuery = true)
 	public List<Permissao> getPermissoesCrudUser();
+	
+	@Transactional
+	@Query(value="SELECT " 
+			+ "	 A.ID_PERMISSAO											AS ID_PERMISSAO "
+			+ "	,A.DS_DESCRICAO											AS DS_DESCRICAO "
+			+ "	,A.CD_SITUACAO											AS CD_SITUACAO "
+			+ "FROM "
+			+ "	SEG_PERMISSAO AS A "
+			+ "	INNER JOIN USUARIO_PERMISSAO AS B ON B.ID_PERMISSAO = A.ID_PERMISSAO "
+			+ "WHERE "
+			+ "	B.ID_USUARIO = ?1 "
+			+ "GROUP BY "
+			+ "	 A.ID_PERMISSAO "
+			+ "	,A.DS_DESCRICAO "
+			+ "	,A.CD_SITUACAO	", nativeQuery = true)
+	public List<Permissao> getPermissoesAssociadasUsuario(Long idUsuario);
+	
+	@Transactional
+	@Query(value="SELECT "
+			+ "	 ID_PERMISSAO											AS ID_PERMISSAO "
+			+ "	,DS_DESCRICAO											AS DS_DESCRICAO "
+			+ "	,CD_SITUACAO											AS CD_SITUACAO "
+			+ "FROM "
+			+ "	SEG_PERMISSAO "
+			+ "WHERE ID_PERMISSAO NOT IN("
+			+ "	SELECT "
+			+ "		A.ID_PERMISSAO "
+			+ "	FROM "
+			+ "		SEG_PERMISSAO AS A "
+			+ "		INNER JOIN USUARIO_PERMISSAO AS B ON B.ID_PERMISSAO = A.ID_PERMISSAO "
+			+ "	WHERE "
+			+ "		B.ID_USUARIO = ?1 "
+			+ "	GROUP BY "
+			+ "		A.ID_PERMISSAO "
+			+ "		,A.DS_DESCRICAO "
+			+ "		,A.CD_SITUACAO	"
+			+ "	)"
+			+ "GROUP BY "
+			+ "	ID_PERMISSAO "
+			+ "	,DS_DESCRICAO "
+			+ "	,CD_SITUACAO		", nativeQuery = true)
+	public List<Permissao> getPermissoesNaoAssociadasUsuario(Long idUsuario);
+	
+	@Modifying
+	@Transactional
+	@Query(value = "INSERT INTO USUARIO_PERMISSAO (ID_USUARIO, ID_PERMISSAO) "
+			+ "SELECT  "
+			+ "	?1 "
+			+ "	,A.ID_PERMISSAO "
+			+ "FROM  "
+			+ "	SEG_PERMISSAO AS A "
+			+ "	INNER JOIN USUARIO_PERMISSAO AS B ON B.ID_PERMISSAO = A.ID_PERMISSAO "
+			+ "WHERE "
+			+ "	A.ID_PERMISSAO IN(?2) "
+			+ "	AND A.ID_PERMISSAO NOT IN(SELECT ID_PERMISSAO FROM USUARIO_PERMISSAO WHERE ID_USUARIO = ?1 AND ID_PERMISSAO IN(?2))", nativeQuery = true)
+	public int incluirPermissaoUsuario(Long idUsuario, List<Long> listaIdPermissao);
+	
+	@Modifying
+	@Transactional
+	@Query(value = "DELETE USUARIO_PERMISSAO WHERE ID_USUARIO = ?1 AND ID_PERMISSAO IN(?2);", nativeQuery = true)
+	public int removerPermissaoUsuario(Long idUsuario, List<Long> listaIdPermissao);
+	
 }

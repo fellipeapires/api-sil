@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.com.sil.model.Permissao;
+import br.com.sil.model.dto.PermissaoDto;
 import br.com.sil.repository.PermissaoRepository;
 import br.com.sil.repository.filter.PermissaoFilter;
 import br.com.sil.service.interfaces.IPermissaoService;
@@ -46,6 +47,22 @@ public class PermissaoService implements IPermissaoService {
 	
 	public List<Permissao> getPermissoesCrudUser() {
 		return this.permissaoRepository.getPermissoesCrudUser();
+	}
+	
+	public List<Permissao> getPermissoesAssociadasUsuario(PermissaoFilter filter) {
+		return this.permissaoRepository.getPermissoesAssociadasUsuario(filter.getIdUsuario());
+	}
+	
+	public List<Permissao> getPermissoesNaoAssociadasUsuario(PermissaoFilter filter) {
+		return this.permissaoRepository.getPermissoesNaoAssociadasUsuario(filter.getIdUsuario());
+	}
+	
+	public int incluirPermissaoUsuario(PermissaoDto entity) {
+		return this.permissaoRepository.incluirPermissaoUsuario(entity.getIdUsuario(), entity.getListaIdPermissao());
+	}
+	
+	public int removerPermissaoUsuario(PermissaoDto entity) {
+		return this.permissaoRepository.removerPermissaoUsuario(entity.getIdUsuario(), entity.getListaIdPermissao());
 	}
 
 }

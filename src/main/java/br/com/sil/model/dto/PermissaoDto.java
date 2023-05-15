@@ -1,4 +1,4 @@
-package br.com.sil.repository.filter;
+package br.com.sil.model.dto;
 
 import java.util.List;
 
@@ -7,11 +7,9 @@ import lombok.Setter;
 import lombok.ToString;
 
 @ToString
-@Getter
 @Setter
-public class PermissaoFilter {
-	private long id;
+@Getter
+public class PermissaoDto {
 	private long idUsuario;
 	private List<Long> listaIdPermissao;
-	private int situacao;
 }
