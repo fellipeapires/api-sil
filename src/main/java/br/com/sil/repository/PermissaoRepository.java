@@ -94,7 +94,8 @@ public interface PermissaoRepository extends JpaRepository<Permissao, Long>, Per
 			+ "	SEG_PERMISSAO AS A "
 			+ "	INNER JOIN USUARIO_PERMISSAO AS B ON B.ID_PERMISSAO = A.ID_PERMISSAO "
 			+ "WHERE "
-			+ "	A.ID_PERMISSAO IN(?2) "
+			+ "	A.CD_SITUACAO = 1 "
+			+ "	AND A.ID_PERMISSAO IN(?2) "
 			+ "	AND A.ID_PERMISSAO NOT IN(SELECT ID_PERMISSAO FROM USUARIO_PERMISSAO WHERE ID_USUARIO = ?1 AND ID_PERMISSAO IN(?2))", nativeQuery = true)
 	public int incluirPermissaoUsuario(Long idUsuario, List<Long> listaIdPermissao);
 	
