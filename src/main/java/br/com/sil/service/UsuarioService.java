@@ -60,6 +60,7 @@ public class UsuarioService implements IUsuarioService {
 				usuario = usuarioRepository.save(entity);
 				this.enviarSenha(usuario, senha);
 			} else {
+				entity.getPermissoes().get(0).setId(this.permissaoService.findByNome("ROLE_MOBILE").get().getId());
 				entity.setSenha(entity.getMatricula());
 				usuario = usuarioRepository.save(entity);
 			}
