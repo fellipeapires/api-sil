@@ -3,6 +3,8 @@ package br.com.sil.resource;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -76,11 +78,16 @@ public class RetornoLeituraResource implements IRetornoLeituraResource {
 		return retornoLeitura != null ? new ResponseEntity<RetornoLeitura>(retornoLeitura, HttpStatus.OK) : ResponseEntity.notFound().build();
 	}
 
-	@Override
 	@GetMapping("/pesquisar")
+	public ResponseEntity<?> pesquisar(RetornoLeituraFilter filter, Pageable pageable) {
+		Page<RetornoLeitura> lista = this.retornoLeituraService.pesquisar(filter, pageable);
+		return new ResponseEntity<Page<RetornoLeitura>>(lista, HttpStatus.OK);
+	}
+	
+	@Override
 	public ResponseEntity<?> pesquisar(RetornoLeituraFilter filter) {
-		List<RetornoLeitura> lista = this.retornoLeituraService.pesquisar(filter);
-		return new ResponseEntity<List<RetornoLeitura>>(lista, HttpStatus.OK);
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 	@GetMapping("/acompanhamento")

@@ -11,6 +11,9 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 
 import br.com.sil.model.Operador;
 import br.com.sil.model.RetornoLeitura;
@@ -23,7 +26,7 @@ public class RetornoLeituraRepositoryImpl implements RetornoLeituraRepositoryQue
 	private EntityManager manager;
 
 	@Override
-	public List<RetornoLeitura> pesquisar(RetornoLeituraFilter filter) {
+	public Page<RetornoLeitura> pesquisar(RetornoLeituraFilter filter, Pageable pageable) {
 		CriteriaBuilder builder = manager.getCriteriaBuilder();
 		CriteriaQuery<RetornoLeitura> criteria = builder.createQuery(RetornoLeitura.class);
 		Root<RetornoLeitura> root = criteria.from(RetornoLeitura.class);
@@ -31,11 +34,16 @@ public class RetornoLeituraRepositoryImpl implements RetornoLeituraRepositoryQue
 		Predicate[] predicates = criarRestricoes(filter, builder, root);
 		criteria.where(predicates);
 		
-		criteria.orderBy(builder.desc(root.get(RetornoLeitura_.variacaoLeitura)));
-		//criteria.orderBy(builder.desc(root.get(RetornoLeitura_.dataLeitura)));
+		if (filter.getVariacaoLeitura() != null ) {
+			criteria.orderBy(builder.asc(root.get(RetornoLeitura_.variacaoLeitura)));			
+		} else {			
+			criteria.orderBy(builder.desc(root.get(RetornoLeitura_.dataLeitura)));
+		}
 		
 		TypedQuery<RetornoLeitura> query = manager.createQuery(criteria);
-		return query.getResultList();
+		adicionarRestricoesDePaginacao(query, pageable);
+		return new PageImpl<>(query.getResultList(), pageable, total(filter));
+		//return query.getResultList();
 	}
 
 	private Predicate[] criarRestricoes(RetornoLeituraFilter filter, CriteriaBuilder builder, Root<RetornoLeitura> root) {
@@ -94,6 +102,27 @@ public class RetornoLeituraRepositoryImpl implements RetornoLeituraRepositoryQue
 		}
 		predicates.add(builder.equal(root.get(RetornoLeitura_.ativo), filter.getAtivo()));
 		return predicates.toArray(new Predicate[predicates.size()]);
+	}
+	
+	private void adicionarRestricoesDePaginacao(TypedQuery<?> query, Pageable pageable) {
+		int paginaAtual = pageable.getPageNumber();
+		int totalRegistrosPorPagina = pageable.getPageSize();
+		int primeiroRegistroDaPagina = paginaAtual * totalRegistrosPorPagina;
+
+		query.setFirstResult(primeiroRegistroDaPagina);
+		query.setMaxResults(totalRegistrosPorPagina);
+	}
+	
+	private Long total(RetornoLeituraFilter filter) {
+		CriteriaBuilder builder = manager.getCriteriaBuilder();
+		CriteriaQuery<Long> criteria = builder.createQuery(Long.class);
+		Root<RetornoLeitura> root = criteria.from(RetornoLeitura.class);
+
+		Predicate[] predicates = criarRestricoes(filter, builder, root);
+		criteria.where(predicates);
+
+		criteria.select(builder.count(root));
+		return manager.createQuery(criteria).getSingleResult();
 	}
 
 }

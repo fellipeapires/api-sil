@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import br.com.sil.model.DescricaoLog;
@@ -336,9 +338,14 @@ public class RetornoLeituraService implements IRetornoLeituraService {
 		return this.retornoLeituraRepository.findById(id).get();
 	}
 
+	public Page<RetornoLeitura> pesquisar(RetornoLeituraFilter filter, Pageable pageable) {
+		return this.retornoLeituraRepository.pesquisar(filter, pageable);
+	}
+	
 	@Override
 	public List<RetornoLeitura> pesquisar(RetornoLeituraFilter filter) {
-		return this.retornoLeituraRepository.pesquisar(filter);
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	public List<AcompanhamentoProjection> getAcompanhamento(RetornoLeituraFilter filter) {
@@ -389,4 +396,5 @@ public class RetornoLeituraService implements IRetornoLeituraService {
 	public int isExiste(long idleitura) {
 		return this.retornoLeituraRepository.isExiste(idleitura);
 	}
+
 }
