@@ -29,7 +29,7 @@ public class Permissao implements Serializable {
 	@Column(name="ID_PERMISSAO")
 	private Long id;
 	
-	@Column(name="DS_DESCRICAO")
+	@Column(name="NM_PERMISSAO")
 	private String nome;
 	
 	@Column(name="CD_SITUACAO")

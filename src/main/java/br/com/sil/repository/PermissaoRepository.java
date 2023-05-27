@@ -16,7 +16,7 @@ public interface PermissaoRepository extends JpaRepository<Permissao, Long>, Per
 	public Optional<Permissao> findByNome(String nome);
 	
 	@Transactional
-	@Query(value="SELECT * FROM SEG_PERMISSAO WHERE DS_DESCRICAO IN("
+	@Query(value="SELECT * FROM SEG_PERMISSAO WHERE NM_PERMISSAO IN("
 			+ "'ROLE_ADMINISTRATIVO',"
 			+ "'ROLE_PESQUISAR',"
 			+ "'ROLE_LEITURA',"
@@ -45,7 +45,7 @@ public interface PermissaoRepository extends JpaRepository<Permissao, Long>, Per
 	@Transactional
 	@Query(value="SELECT " 
 			+ "	 A.ID_PERMISSAO											AS ID_PERMISSAO "
-			+ "	,A.DS_DESCRICAO											AS DS_DESCRICAO "
+			+ "	,A.NM_PERMISSAO											AS NM_PERMISSAO "
 			+ "	,A.CD_SITUACAO											AS CD_SITUACAO "
 			+ "FROM "
 			+ "	SEG_PERMISSAO AS A "
@@ -54,14 +54,14 @@ public interface PermissaoRepository extends JpaRepository<Permissao, Long>, Per
 			+ "	B.ID_USUARIO = ?1 "
 			+ "GROUP BY "
 			+ "	 A.ID_PERMISSAO "
-			+ "	,A.DS_DESCRICAO "
+			+ "	,A.NM_PERMISSAO "
 			+ "	,A.CD_SITUACAO	", nativeQuery = true)
 	public List<Permissao> getPermissoesAssociadasUsuario(Long idUsuario);
 	
 	@Transactional
 	@Query(value="SELECT "
 			+ "	 ID_PERMISSAO											AS ID_PERMISSAO "
-			+ "	,DS_DESCRICAO											AS DS_DESCRICAO "
+			+ "	,NM_PERMISSAO											AS NM_PERMISSAO "
 			+ "	,CD_SITUACAO											AS CD_SITUACAO "
 			+ "FROM "
 			+ "	SEG_PERMISSAO "
@@ -75,12 +75,12 @@ public interface PermissaoRepository extends JpaRepository<Permissao, Long>, Per
 			+ "		B.ID_USUARIO = ?1 "
 			+ "	GROUP BY "
 			+ "		A.ID_PERMISSAO "
-			+ "		,A.DS_DESCRICAO "
+			+ "		,A.NM_PERMISSAO "
 			+ "		,A.CD_SITUACAO	"
 			+ "	)"
 			+ "GROUP BY "
 			+ "	ID_PERMISSAO "
-			+ "	,DS_DESCRICAO "
+			+ "	,NM_PERMISSAO "
 			+ "	,CD_SITUACAO		", nativeQuery = true)
 	public List<Permissao> getPermissoesNaoAssociadasUsuario(Long idUsuario);
 	

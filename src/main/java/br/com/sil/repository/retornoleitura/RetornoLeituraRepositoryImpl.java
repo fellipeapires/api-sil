@@ -73,10 +73,12 @@ public class RetornoLeituraRepositoryImpl implements RetornoLeituraRepositoryQue
 			predicates.add(builder.equal(root.get(RetornoLeitura_.tarefaLeitura), filter.getTarefa()));
 		}
 		if (filter.getInstalacao() != null) {
-			predicates.add(builder.equal(root.get(RetornoLeitura_.instalacao), filter.getInstalacao()));
+			predicates.add(builder.like(builder.upper(root.get(RetornoLeitura_.instalacao)), "%"+filter.getInstalacao()));
+			//predicates.add(builder.equal(root.get(RetornoLeitura_.instalacao), filter.getInstalacao()));
 		}
 		if (filter.getMedidor() != null) {
-			predicates.add(builder.equal(root.get(RetornoLeitura_.medidor), filter.getMedidor()));
+			predicates.add(builder.like(builder.upper(root.get(RetornoLeitura_.medidor)), "%"+filter.getMedidor()));
+			//predicates.add(builder.equal(root.get(RetornoLeitura_.medidor), filter.getMedidor()));
 		}
 		if (filter.getMsgMobile() != null) {
 			predicates.add(builder.equal(root.get(RetornoLeitura_.leitura).<String>get("mensAvisoMobile"), filter.getMsgMobile()));
