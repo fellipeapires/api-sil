@@ -11,6 +11,7 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
+import br.com.sil.model.StatusRegitro;
 import br.com.sil.model.Usuario;
 import br.com.sil.model.Usuario_;
 import br.com.sil.repository.filter.UsuarioFilter;
@@ -47,7 +48,9 @@ public class UsuarioRepositoryImpl implements UsuarioRepositoryQuery {
 		if (filter.getIdPerfilAcesso() > 0) {
 			predicates.add(builder.equal(root.join(Usuario_.perfilAcesso).<Long>get("id"), filter.getIdPerfilAcesso()));
 		}
-		predicates.add(builder.equal(root.get(Usuario_.situacao), filter.getSituacao()));
+		if (filter.getSituacao() != StatusRegitro.TODOS.getCodigo()) {			
+			predicates.add(builder.equal(root.get(Usuario_.situacao), filter.getSituacao()));
+		}
 		return predicates.toArray(new Predicate[predicates.size()]);
 	}
 }
