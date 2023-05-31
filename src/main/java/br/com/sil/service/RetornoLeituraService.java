@@ -2,6 +2,7 @@ package br.com.sil.service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -166,7 +167,7 @@ public class RetornoLeituraService implements IRetornoLeituraService {
 			retornoLeitura.setAtivo(StatusRegitro.ATIVO.getCodigo());
 			RetornoLeitura retornoLeituraSalvo = this.retornoLeituraRepository.save(retornoLeitura);
 			if (retornoLeituraSalvo != null) {
-				this.retornoLeituraRepository.setLogLancamentoLeitura(entity.getIdUsuarioAlteracao(), retornoLeitura.getId(), retornoLeitura.getId(), DescricaoLog.LANCAMENTO_LEITURA.getNome(), LocalDateTime.now());
+				this.retornoLeituraRepository.setLogLancamentoLeitura(entity.getIdUsuarioAlteracao(), retornoLeitura.getId(), retornoLeitura.getId(), DescricaoLog.LANCAMENTO_LEITURA.getNome(), LocalDateTime.now(ZoneId.of("America/Sao_Paulo")));
 				if (entity.getListaFoto().size() > 0) {					
 					this.retornoFotoService.upload(entity.getListaFoto(), entity.getIdUsuarioAlteracao());
 				}
@@ -219,7 +220,7 @@ public class RetornoLeituraService implements IRetornoLeituraService {
 			retornoLeitura.setAtivo(StatusRegitro.ATIVO.getCodigo());
 			RetornoLeitura retornoLeituraSalvo = this.retornoLeituraRepository.save(retornoLeitura);
 			if (retornoLeituraSalvo != null) {
-				this.retornoLeituraRepository.setLogLancamentoLeitura(entity.getIdUsuarioAlteracao(), retornoLeitura.getId(), retornoLeitura.getId(),  DescricaoLog.LANCAMENTO_REPASSE.getNome(), LocalDateTime.now());
+				this.retornoLeituraRepository.setLogLancamentoLeitura(entity.getIdUsuarioAlteracao(), retornoLeitura.getId(), retornoLeitura.getId(),  DescricaoLog.LANCAMENTO_REPASSE.getNome(), LocalDateTime.now(ZoneId.of("America/Sao_Paulo")));
 				this.retornoFotoService.incluirRepasse(entity.getIdLeituraRepasse(), entity.getIdUsuario(), entity.getIdLeituraPasse());
 				if (entity.getListaFoto().size() > 0) {					
 					this.retornoFotoService.upload(entity.getListaFoto(), entity.getIdUsuarioAlteracao());
@@ -268,12 +269,12 @@ public class RetornoLeituraService implements IRetornoLeituraService {
 			RetornoLeitura retornoLeituraSalvo = this.retornoLeituraRepository.save(retornoLeitura);
 			RetornoLeitura retornoLeituraLog = null;
 			if (retornoLeituraSalvo != null) {
-				r.setDataAtualizacao(LocalDateTime.now());
+				r.setDataAtualizacao(LocalDateTime.now(ZoneId.of("America/Sao_Paulo")));
 				r.setAtivo(StatusRegitro.INATIVO.getCodigo());
 				retornoLeituraLog = this.retornoLeituraRepository.save(r);
 			}
 			if (retornoLeituraLog != null) {
-				this.retornoLeituraRepository.setLogLancamentoLeitura(entity.getIdUsuarioAlteracao(), r.getId(), retornoLeitura.getId(), DescricaoLog.ALTERACAO_LEITURA.getNome(), LocalDateTime.now());
+				this.retornoLeituraRepository.setLogLancamentoLeitura(entity.getIdUsuarioAlteracao(), r.getId(), retornoLeitura.getId(), DescricaoLog.ALTERACAO_LEITURA.getNome(), LocalDateTime.now(ZoneId.of("America/Sao_Paulo")));
 			}
 			return retornoLeituraSalvo;
 		} catch (Exception e) {
@@ -314,12 +315,12 @@ public class RetornoLeituraService implements IRetornoLeituraService {
 			RetornoLeitura retornoLeituraSalvo = this.retornoLeituraRepository.save(retornoLeitura);
 			RetornoLeitura retornoLeituraLog = null;
 			if (retornoLeituraSalvo != null) {
-				r.setDataAtualizacao(LocalDateTime.now());
+				r.setDataAtualizacao(LocalDateTime.now(ZoneId.of("America/Sao_Paulo")));
 				r.setAtivo(StatusRegitro.INATIVO.getCodigo());
 				retornoLeituraLog = this.retornoLeituraRepository.save(r);
 			}
 			if (retornoLeituraLog != null) {
-				this.retornoLeituraRepository.setLogLancamentoLeitura(entity.getIdUsuarioAlteracao(), r.getId(), retornoLeitura.getId(), DescricaoLog.REVISAO_LEITURA.getNome(), LocalDateTime.now());
+				this.retornoLeituraRepository.setLogLancamentoLeitura(entity.getIdUsuarioAlteracao(), r.getId(), retornoLeitura.getId(), DescricaoLog.REVISAO_LEITURA.getNome(), LocalDateTime.now(ZoneId.of("America/Sao_Paulo")));
 			}
 			return retornoLeituraSalvo;
 		} catch (Exception e) {

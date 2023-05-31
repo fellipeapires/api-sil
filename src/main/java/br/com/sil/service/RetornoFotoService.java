@@ -6,6 +6,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -140,7 +141,7 @@ public class RetornoFotoService implements IRetornoFotoService {
 				}
 				RetornoFoto f = retornoFotoRepository.save(retornoFoto);
 				if (f != null) {
-					this.retornoFotoRepository.setLogIncluirFoto(f.getId(), idUsuarioAlteracao, DescricaoLog.INCLUSAO_FOTO.getNome(), LocalDateTime.now());
+					this.retornoFotoRepository.setLogIncluirFoto(f.getId(), idUsuarioAlteracao, DescricaoLog.INCLUSAO_FOTO.getNome(), LocalDateTime.now(ZoneId.of("America/Sao_Paulo")));
 				}
 			} catch (Exception e) {
 				System.out.println("CAUSA ERRO: " + e.getMessage() + " - idUsuario: " + photo.getUsuario().getId() + " - nomeFoto: " + photo.getNome());
@@ -234,7 +235,7 @@ public class RetornoFotoService implements IRetornoFotoService {
 			httpHeaders.add("Content-Disposition", "attachment;filename=imagem_" + nomeZip + ".zip");
 			HttpEntity<byte[]> entity = new HttpEntity<byte[]>(arquivo, httpHeaders);
 			if  (entity != null) {
-				this.retornoFotoRepository.setLogIncluirFoto(idRetornoFoto, idUsuarioAlteracao, DescricaoLog.DOWNLOAD_FOTO.getNome(), LocalDateTime.now());
+				this.retornoFotoRepository.setLogIncluirFoto(idRetornoFoto, idUsuarioAlteracao, DescricaoLog.DOWNLOAD_FOTO.getNome(), LocalDateTime.now(ZoneId.of("America/Sao_Paulo")));
 			}
 			return entity;	
 		} catch (Exception e) {

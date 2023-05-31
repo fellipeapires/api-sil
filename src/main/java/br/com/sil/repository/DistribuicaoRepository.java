@@ -1,6 +1,7 @@
 package br.com.sil.repository;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -21,7 +22,7 @@ public interface DistribuicaoRepository extends JpaRepository<Distribuicao, Long
 	@Modifying
 	@Transactional
 	@Query(value = "INSERT INTO MED_DISTRIBUICAO_LEITURA_REGISTRO (ID_LEITURA, ID_REGIONAL, ID_USUARIO, FL_ASSOCIADO, DT_DISTRIBUICAO) "
-			+ "SELECT A.ID_LEITURA, ?1, ?4, ?8, GETDATE() " 
+			+ "SELECT A.ID_LEITURA, ?1, ?4, ?8, ?9 " 
 			+ "FROM MED_LEITURA AS A "
 			+ "INNER JOIN MED_IMPORTACAO AS B ON A.ID_IMPORTACAO = B.ID_IMPORTACAO "
 			+ "INNER JOIN MED_GRUPO_FATURAMENTO AS D ON D.ID_GRUPO_FATURAMENTO = B.ID_GRUPO_FATURAMENTO "
@@ -31,12 +32,12 @@ public interface DistribuicaoRepository extends JpaRepository<Distribuicao, Long
 			+ "AND RTRIM(LTRIM(LEFT(A.NM_ENDERECO, 62))) = ISNULL(?6, RTRIM(LTRIM(LEFT(A.NM_ENDERECO, 62)))) "
 			+ "AND A.ID_LEITURA = ISNULL((CASE WHEN ?7 = 0 THEN NULL ELSE ?7 END), A.ID_LEITURA) "
 			+ "AND C.ID_DISTRIBUICAO_LEITURA_REGISTRO IS NULL AND E.ID_LEITURA IS NULL ", nativeQuery = true)
-	public int incluir(Long idRegional, LocalDate dataReferencia, int grupoFaturamento, Long idUsuario, String tarefaLeitura, String endereco, Long idLeitura, int associado);
+	public int incluir(Long idRegional, LocalDate dataReferencia, int grupoFaturamento, Long idUsuario, String tarefaLeitura, String endereco, Long idLeitura, int associado, LocalDateTime dataDistribuicao);
 	
 	@Modifying
 	@Transactional
 	@Query(value = "INSERT INTO MED_DISTRIBUICAO_LEITURA_REGISTRO (ID_LEITURA, ID_REGIONAL, ID_USUARIO, FL_ASSOCIADO, DT_DISTRIBUICAO) "
-			+ "SELECT A.ID_LEITURA, ?1, ?5, ?7, GETDATE() "
+			+ "SELECT A.ID_LEITURA, ?1, ?5, ?7, ?8 "
 			+ "FROM MED_LEITURA AS A "
 			+ "INNER JOIN MED_IMPORTACAO AS B ON A.ID_IMPORTACAO = B.ID_IMPORTACAO "
 			+ "INNER JOIN MED_GRUPO_FATURAMENTO AS D ON D.ID_GRUPO_FATURAMENTO = B.ID_GRUPO_FATURAMENTO "
@@ -52,7 +53,7 @@ public interface DistribuicaoRepository extends JpaRepository<Distribuicao, Long
 			+ "WHERE B.ID_REGIONAL = ?1 AND B.DT_ANO_MES_REF = ?2 AND E.ID_USUARIO = ?5 "
 			+ "AND D.CD_GRUPO_FATURAMENTO = ?3 AND A.CD_TAREFA_LEITURA = ?4 "
 			+ ")", nativeQuery = true)
-	public Integer duplicar(Long idRegional, LocalDate dataReferencia, int grupoFaturamento, String tarefaLeitura, Long idUsuario, Long idUsuarioAtribuido, int associado);
+	public Integer duplicar(Long idRegional, LocalDate dataReferencia, int grupoFaturamento, String tarefaLeitura, Long idUsuario, Long idUsuarioAtribuido, int associado, LocalDateTime dataDistribuicao);
 	
 	@Transactional
 	@Query(value="SELECT D.ID_USUARIO AS IDUSUARIO, A.ID_LEITURA AS IDLEITURA "
@@ -133,7 +134,8 @@ public interface DistribuicaoRepository extends JpaRepository<Distribuicao, Long
 			+ "B.DT_ANO_MES_REF AS DATAREFERENCIA, A.CD_TAREFA_LEITURA AS TAREFA, "
 			+ "CONCAT(RTRIM(LTRIM(LEFT(A.NM_ENDERECO, 62))), ', ', RTRIM(LTRIM(SUBSTRING(A.NM_ENDERECO, 62, 10))), ' ', RTRIM(LTRIM(RIGHT(A.NM_ENDERECO, 10)))) AS ENDERECO, "
 			+ "RTRIM(LTRIM(A.NM_MUNICIPIO)) AS LOCALIDADE, COUNT(*) AS QTD "
-			+ "FROM MED_LEITURA AS A " + "INNER JOIN MED_IMPORTACAO AS B ON A.ID_IMPORTACAO = B.ID_IMPORTACAO "
+			+ "FROM MED_LEITURA AS A " 
+			+ "INNER JOIN MED_IMPORTACAO AS B ON A.ID_IMPORTACAO = B.ID_IMPORTACAO "
 			+ "INNER JOIN MED_GRUPO_FATURAMENTO AS D ON D.ID_GRUPO_FATURAMENTO = B.ID_GRUPO_FATURAMENTO "
 			+ "LEFT OUTER JOIN MED_DISTRIBUICAO_LEITURA_REGISTRO AS C ON C.ID_LEITURA = A.ID_LEITURA "
 			+ "LEFT OUTER JOIN MED_RETORNO_LEITURA AS E ON E.ID_LEITURA = A.ID_LEITURA "

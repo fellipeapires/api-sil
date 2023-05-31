@@ -1,6 +1,7 @@
 package br.com.sil.service;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -104,7 +105,7 @@ public class UsuarioService implements IUsuarioService {
 	}
 	
 	public Integer registrarAcesso(AcessoDto entity) {
-		return this.usuarioRepository.resgistrarAcesso(entity.getIdUsuario(), entity.getBrowser(), entity.getIp(), LocalDateTime.now());
+		return this.usuarioRepository.resgistrarAcesso(entity.getIdUsuario(), entity.getBrowser(), entity.getIp(), LocalDateTime.now(ZoneId.of("America/Sao_Paulo")));
 	}
 
 	@Override

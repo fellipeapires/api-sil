@@ -1,5 +1,7 @@
 package br.com.sil.service;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,14 +36,14 @@ public class DistribuicaoService implements IDistribuicaoService {
 		for (DistribuicaoDto entity : lista) {
 			qtd += this.distribuicaoRepository.incluir(entity.getIdRegional(), entity.getDataReferencia(), 
 					entity.getGrupoFaturamento(), entity.getIdUsuario(), entity.getTarefa(),
-					entity.getEndereco(), entity.getIdLeitura(), StatusDistribuicao.NAO_LIBERADO.getCodigo());
+					entity.getEndereco(), entity.getIdLeitura(), StatusDistribuicao.NAO_LIBERADO.getCodigo(), LocalDateTime.now(ZoneId.of("America/Sao_Paulo")));
 		}
 		return qtd;
 	}
 
 	public Integer duplicar(DistribuicaoDto entity) {
 		return this.distribuicaoRepository.duplicar(entity.getIdRegional(), entity.getDataReferencia(),
-				entity.getGrupoFaturamento(), entity.getTarefa(), entity.getIdUsuario(), entity.getIdUsuarioAtribuido(), StatusDistribuicao.NAO_LIBERADO.getCodigo());
+				entity.getGrupoFaturamento(), entity.getTarefa(), entity.getIdUsuario(), entity.getIdUsuarioAtribuido(), StatusDistribuicao.NAO_LIBERADO.getCodigo(), LocalDateTime.now(ZoneId.of("America/Sao_Paulo")));
 	}
 	
 	public Integer desassociar(String dataReferencia, long idRegional, int grupoFaturamento, String tarefa, long idUsuario) {
