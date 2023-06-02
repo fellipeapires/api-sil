@@ -240,7 +240,7 @@ public interface RetornoLeituraRepository extends JpaRepository<RetornoLeitura, 
 			+ "INNER JOIN MED_IMPORTACAO AS I ON I.ID_IMPORTACAO = A.ID_IMPORTACAO "
 			+ "INNER JOIN MED_GRUPO_FATURAMENTO AS G ON G.ID_GRUPO_FATURAMENTO = I.ID_GRUPO_FATURAMENTO "
 			+ "WHERE I.ID_REGIONAL = ?1 AND I.DT_ANO_MES_REF = ?2 AND G.CD_GRUPO_FATURAMENTO = ?3 AND A.ST_TIPOLEITURA = ?4 AND B.FL_ATIVO = 1 "
-			+ "CONVERT(DATETIME, CONCAT(I.DT_PREVISAO_FIM, ' ', CONVERT(VARCHAR(8), B.DT_LEITURA, 114)), 20) ASC", nativeQuery = true)
+			+ "ORDER BY CONVERT(DATETIME, CONCAT(I.DT_PREVISAO_FIM, ' ', CONVERT(VARCHAR(8), B.DT_LEITURA, 114)), 20) ASC", nativeQuery = true)
 	public List<RetornoLeituraExportacaoProjection> getRetornoLeituraExportacaoDataFim(Long idRegional, LocalDate dataReferencia, int grupoFaturamento, String tipoLeitura);
 
 	@Transactional
