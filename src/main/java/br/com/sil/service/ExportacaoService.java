@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
@@ -68,7 +69,7 @@ public class ExportacaoService implements IExportacaoService {
 	
 	public Exportacao exportar(ExportacaoFilter filter) throws Exception {
 		int qtdExportado = 0;
-		LocalDateTime dataExportacao = LocalDateTime.now();
+		LocalDateTime dataExportacao = LocalDateTime.now(ZoneId.of("America/Sao_Paulo"));
 		System.out.println("Data Inicio Exportacao: " + dataExportacao);
 		
 		GrupoFaturamento grupoFaturamento = this.grupoFaturamentoService.findByCodigo(filter.getGrupoFaturamento()).get();
@@ -167,8 +168,7 @@ public class ExportacaoService implements IExportacaoService {
 					if (retorno.getLatitude() == null || retorno.getLatitude().equals("0")) {
 						gravar.printf(String.format("%8s", "") + " " + String.format("%8s", ""));
 					} else {
-						gravar.printf(
-								retorno.getLatitude().substring(0, 7) + "," + retorno.getLongitude().substring(0, 7));// 17 digitos;
+						gravar.printf(retorno.getLatitude() + "," + retorno.getLongitude());// 17 digitos;
 					}
 					gravar.printf(retorno.getObservacao() + "\r\n");
 				}
@@ -182,7 +182,7 @@ public class ExportacaoService implements IExportacaoService {
 			} finally {
 				try {
 					arquivoExportacao.close();
-					dataExportacao = LocalDateTime.now();
+					dataExportacao = LocalDateTime.now(ZoneId.of("America/Sao_Paulo"));
 					System.out.println("Data Fim Exportacao: " + dataExportacao + " - qtd: " + qtdExportado);
 					exportacaoSalva.setObservacao("Exportado com sucesso!");
 					exportacaoSalva.setQtdExportacao(qtdExportado);
@@ -194,7 +194,7 @@ public class ExportacaoService implements IExportacaoService {
 				}
 			}
 		}
-		dataExportacao = LocalDateTime.now();
+		dataExportacao = LocalDateTime.now(ZoneId.of("America/Sao_Paulo"));
 		System.out.println("Data Fim Exportacao: " + dataExportacao + " - qtd: " + qtdExportado);
 		return null;
 	}
