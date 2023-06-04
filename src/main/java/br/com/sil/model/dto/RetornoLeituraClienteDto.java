@@ -22,6 +22,7 @@ public class RetornoLeituraClienteDto {
 	private String medidor;
 	private Integer leituraMedida;
 	private String segmento;
+	private String ramoAtividade;
 	private String endereco;
 	private String complemento;
 	private String municipio;

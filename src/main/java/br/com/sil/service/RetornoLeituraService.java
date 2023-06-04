@@ -411,14 +411,27 @@ public class RetornoLeituraService implements IRetornoLeituraService {
 		dto.setInstalacao(projection.getInstalacao());
 		dto.setMedidor(projection.getMedidor());
 		dto.setLeituraMedida(projection.getLeituraMedida());
-		dto.setSegmento(projection.getSegmento());
+		dto.setDataLeitura(projection.getDataLeitura());
+		dto.setRamoAtividade(projection.getRamoAtividade().toUpperCase());
 		dto.setEndereco(projection.getEndereco());
 		dto.setComplemento(projection.getComplemento());
 		dto.setMunicipio(projection.getMunicipio());
 		dto.setIsFoto(projection.getIsFoto());
 		dto.setLatitude(projection.getLatitude());
-		dto.setLatitude(projection.getLongitude());
+		dto.setLongitude(projection.getLongitude());
 		dto.setListaFoto(this.retornoFotoService.listar(projection.getIdLeitura()));
+		if (projection.getSegmento().equalsIgnoreCase("01")) {
+			dto.setSegmento("RESIDENCIAL");
+		} else if (projection.getSegmento().equalsIgnoreCase("02")) {
+			dto.setSegmento("COMERCIO");
+		} else if (projection.getSegmento().equalsIgnoreCase("13")) {
+			dto.setSegmento("COLETIVO");
+		} else if (projection.getSegmento().equalsIgnoreCase("19")) {
+			dto.setSegmento("REFRIGERACAO");
+		} else {
+			dto.setSegmento("OUTROS");
+			//(projection.getSegmento().equalsIgnoreCase("03") || projection.getSegmento().equalsIgnoreCase("07") || projection.getSegmento().equalsIgnoreCase("18"))
+		}
 		return dto;
 	}
 

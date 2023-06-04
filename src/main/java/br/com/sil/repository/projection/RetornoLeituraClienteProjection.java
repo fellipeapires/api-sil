@@ -9,6 +9,7 @@ public interface RetornoLeituraClienteProjection {
 	Integer getLeituraMedida();
 	LocalDateTime getDataLeitura();
 	String getSegmento();
+	String getRamoAtividade();
 	String getEndereco();
 	String getComplemento();
 	String getMunicipio();
