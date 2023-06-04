@@ -21,6 +21,7 @@ import br.com.sil.model.RetornoLeitura;
 import br.com.sil.model.RetornoLeituraInfo;
 import br.com.sil.model.StatusRegitro;
 import br.com.sil.model.Usuario;
+import br.com.sil.model.dto.RetornoLeituraClienteDto;
 import br.com.sil.model.dto.RetornoLeituraDto;
 import br.com.sil.model.dto.RetornoLeituraMobileDto;
 import br.com.sil.repository.RetornoLeituraRepository;
@@ -29,6 +30,7 @@ import br.com.sil.repository.projection.AcompanhamentoDetailProjection;
 import br.com.sil.repository.projection.AcompanhamentoProjection;
 import br.com.sil.repository.projection.AcompanhamentoTotalProjection;
 import br.com.sil.repository.projection.MapaProjection;
+import br.com.sil.repository.projection.RetornoLeituraClienteProjection;
 import br.com.sil.repository.projection.RetornoLeituraExportacaoProjection;
 import br.com.sil.repository.projection.RetornoLeituraProjection;
 import br.com.sil.service.interfaces.IRetornoLeituraService;
@@ -396,6 +398,28 @@ public class RetornoLeituraService implements IRetornoLeituraService {
 	
 	public int isExiste(long idleitura) {
 		return this.retornoLeituraRepository.isExiste(idleitura);
+	}
+	
+	public void marcarComFoto(long idRetornoLeitura) {
+		this.retornoLeituraRepository.marcarComFoto(idRetornoLeitura);
+	}
+	
+	public RetornoLeituraClienteDto getRetornoLeituraCliente(RetornoLeituraFilter filter) {
+		RetornoLeituraClienteProjection projection = this.retornoLeituraRepository.getRetornoLeituraCliente(filter.getIdRegional(), filter.getDataReferencia(), filter.getGrupoFaturamento(), filter.getInstalacao(), filter.getMedidor());
+		RetornoLeituraClienteDto dto = new RetornoLeituraClienteDto();
+		dto.setIdLeitura(projection.getIdLeitura());
+		dto.setInstalacao(projection.getInstalacao());
+		dto.setMedidor(projection.getMedidor());
+		dto.setLeituraMedida(projection.getLeituraMedida());
+		dto.setSegmento(projection.getSegmento());
+		dto.setEndereco(projection.getEndereco());
+		dto.setComplemento(projection.getComplemento());
+		dto.setMunicipio(projection.getMunicipio());
+		dto.setIsFoto(projection.getIsFoto());
+		dto.setLatitude(projection.getLatitude());
+		dto.setLatitude(projection.getLongitude());
+		dto.setListaFoto(this.retornoFotoService.listar(projection.getIdLeitura()));
+		return dto;
 	}
 
 }

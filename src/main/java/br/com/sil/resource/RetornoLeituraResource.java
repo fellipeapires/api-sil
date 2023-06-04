@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.sil.model.RetornoLeitura;
+import br.com.sil.model.dto.RetornoLeituraClienteDto;
 import br.com.sil.model.dto.RetornoLeituraDto;
 import br.com.sil.model.dto.RetornoLeituraMobileDto;
 import br.com.sil.repository.filter.RetornoLeituraFilter;
@@ -142,6 +143,12 @@ public class RetornoLeituraResource implements IRetornoLeituraResource {
 	public ResponseEntity<?> setRevisao(@RequestBody RetornoLeituraDto entity) {
 		RetornoLeitura retornoLeitura = this.retornoLeituraService.setRevisao(entity);
 		return new ResponseEntity<RetornoLeitura>(retornoLeitura, HttpStatus.OK);
+	}
+	
+	@GetMapping("/consultacliente")
+	public ResponseEntity<?> getRetornoLeituraCliente(RetornoLeituraFilter filter) {
+		RetornoLeituraClienteDto retornoLeitura = this.retornoLeituraService.getRetornoLeituraCliente(filter);
+		return new ResponseEntity<RetornoLeituraClienteDto>(retornoLeitura, HttpStatus.OK);
 	}
 
 }

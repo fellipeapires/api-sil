@@ -15,7 +15,7 @@ import br.com.sil.repository.retornofoto.RetornoFotoRepositoryQuery;
 
 public interface RetornoFotoRepository extends JpaRepository<RetornoFoto, Long>, RetornoFotoRepositoryQuery {
 
-	public Optional<RetornoFoto> findByNome(String nome);	
+	public Optional<RetornoFoto> findByNome(String nome);
 	
 	@Transactional
 	@Query(value="SELECT TOP 1 * FROM RETORNO_FOTO WHERE NM_NOME = ?1 ", nativeQuery = true)
@@ -24,6 +24,11 @@ public interface RetornoFotoRepository extends JpaRepository<RetornoFoto, Long>,
 	@Transactional
 	@Query(value="SELECT ID_RETORNO_FOTO AS ID, DS_PATH AS PATH FROM RETORNO_FOTO WHERE ID_LEITURA = ?1 ", nativeQuery = true)
 	public List<RetornoFotoProjection> listar(Long idLeitura);
+	
+	
+	@Transactional
+	@Query(value="SELECT * FROM RETORNO_FOTO WHERE ID_LEITURA = ?1 ", nativeQuery = true)
+	public List<RetornoFoto> getConsultaCliente(Long idLeitura);
 	
 	@Transactional
 	@Query(value="SELECT LTRIM(RTRIM(DS_PATH)) FROM RETORNO_FOTO WHERE ID_RETORNO_FOTO = ?1", nativeQuery = true)
@@ -44,4 +49,5 @@ public interface RetornoFotoRepository extends JpaRepository<RetornoFoto, Long>,
 			+ "LEFT OUTER JOIN RETORNO_FOTO AS B2 ON B2.ID_LEITURA = C.ID_LEITURA "
 			+ "WHERE B.ID_LEITURA = ?3 AND B2.ID_LEITURA IS NULL", nativeQuery = true)
 	public int incluirRepasse(long idLeituraRepasse, long idUsuario, long idLeituraPasse);
+	
 }

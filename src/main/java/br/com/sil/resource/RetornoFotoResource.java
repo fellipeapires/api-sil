@@ -25,6 +25,7 @@ import br.com.sil.repository.filter.RetornoFotoFilter;
 import br.com.sil.repository.projection.RetornoFotoProjection;
 import br.com.sil.resource.interfaces.IRetornoFotoResource;
 import br.com.sil.service.RetornoFotoService;
+import br.com.sil.service.RetornoLeituraService;
 
 
 @RestController
@@ -36,6 +37,9 @@ public class RetornoFotoResource implements IRetornoFotoResource {
 	
 	@Autowired
 	private RetornoFotoService retornoFotoService;
+	
+	@Autowired
+	private RetornoLeituraService retornoLeituraService;
 	
 	@Override
 	public ResponseEntity<?> incluir(RetornoFoto entity) {
@@ -63,7 +67,7 @@ public class RetornoFotoResource implements IRetornoFotoResource {
 	
 	@GetMapping("/listar")
 	public ResponseEntity<?> listar(RetornoFotoFilter filter) throws Exception {
-		List<RetornoFotoProjection> lista = this.retornoFotoService.listar(filter);
+		List<RetornoFotoProjection> lista = this.retornoFotoService.listar(filter.getIdLeitura());
 		return new ResponseEntity<List<RetornoFotoProjection>>(lista, HttpStatus.OK);
 	}
 
@@ -80,9 +84,12 @@ public class RetornoFotoResource implements IRetornoFotoResource {
 		}
 	}
 	
-	@PostMapping("/upload/{idUsuarioAlteracao}")
-	public ResponseEntity<?> upload(@RequestBody List<RetornoFoto> listaFoto, @PathVariable("idUsuarioAlteracao") long idUsuarioAlteracao) throws Exception {
+	@PostMapping("/upload/{idRetornoLeitura}/{idUsuarioAlteracao}")
+	public ResponseEntity<?> upload(@RequestBody List<RetornoFoto> listaFoto, @PathVariable("idRetornoLeitura") long idRetornoLeitura, @PathVariable("idUsuarioAlteracao") long idUsuarioAlteracao) throws Exception {
 		List<String> lista = this.retornoFotoService.upload(listaFoto, idUsuarioAlteracao);
+		if (lista != null) {
+			this.retornoLeituraService.marcarComFoto(idRetornoLeitura);
+		}
 		return new ResponseEntity<List<String>>(lista, HttpStatus.OK);
 	}
 	

@@ -75,8 +75,8 @@ public class RetornoFotoService implements IRetornoFotoService {
 		return null;
 	}
 	
-	public List<RetornoFotoProjection> listar(RetornoFotoFilter filter) {
-		return this.retornoFotoRepository.listar(filter.getIdLeitura());
+	public List<RetornoFotoProjection> listar(Long idLeitura) {
+		return this.retornoFotoRepository.listar(idLeitura);
 	}
 	
 	public Optional<RetornoFoto> findByNome(String nome) {
