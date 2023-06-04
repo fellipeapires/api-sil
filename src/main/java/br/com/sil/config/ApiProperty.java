@@ -14,15 +14,15 @@ public class ApiProperty {
 	private String originPermitida = "http://localhost";
 	private String urlDesenv = "http://localhost:4200";
 	private String urlMobile = "http://localhost";
-	//private String pathImportacao = "/opt/jboss/wildfly/standalone/tmp/sil/importacao/";
-	//private String pathExportacao = "/opt/jboss/wildfly/standalone/tmp/sil/exportacao/";
-	//private String pathFoto = "/opt/jboss/wildfly/standalone/tmp/sil/fotos/";
+	private String pathImportacao = "/opt/jboss/wildfly/standalone/tmp/sil/importacao/";
+	private String pathExportacao = "/opt/jboss/wildfly/standalone/tmp/sil/exportacao/";
+	private String pathFoto = "/opt/jboss/wildfly/standalone/tmp/sil/fotos/";
 	private String urlProducao = "https://silgascomgas.grupofloripark.com.br";
 	private final Mail mail = new Mail();
 	
-	private String pathImportacao = "/Users/fellipeaugustopires/Documents/SFTP/opt/jboss/wildfly/standalone/tmp/sil/importacao/";
-	private String pathExportacao = "/Users/fellipeaugustopires/Documents/SFTP/opt/jboss/wildfly/standalone/tmp/sil/exportacao/";
-	private String pathFoto = "/Users/fellipeaugustopires/Documents/SFTP/opt/jboss/wildfly/standalone/tmp/sil/fotos/";
+	//private String pathImportacao = "/Users/fellipeaugustopires/Documents/SFTP/opt/jboss/wildfly/standalone/tmp/sil/importacao/";
+	//private String pathExportacao = "/Users/fellipeaugustopires/Documents/SFTP/opt/jboss/wildfly/standalone/tmp/sil/exportacao/";
+	//private String pathFoto = "/Users/fellipeaugustopires/Documents/SFTP/opt/jboss/wildfly/standalone/tmp/sil/fotos/";
 	
 	@Getter
 	@Setter
