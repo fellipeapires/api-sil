@@ -19,6 +19,7 @@ import br.com.sil.model.dto.DistribuicaoDto;
 import br.com.sil.repository.filter.DistribuicaoFilter;
 import br.com.sil.repository.projection.CargaMobileProjection;
 import br.com.sil.repository.projection.DistribuicaoProjection;
+import br.com.sil.repository.projection.DistribuidoDetailProjection;
 import br.com.sil.repository.projection.DistribuidoProjection;
 import br.com.sil.resource.interfaces.IDistribuicaoResource;
 import br.com.sil.service.DistribuicaoService;
@@ -51,7 +52,13 @@ public class DistribuicaoResource implements IDistribuicaoResource {
 	@DeleteMapping("/desassociar/{dataReferencia}/{idRegional}/{grupoFaturamento}/{tarefa}/{idUsuario}")
 	public ResponseEntity<?> desassociar(@PathVariable("dataReferencia") String dataReferencia, @PathVariable("idRegional") long idRegional, @PathVariable("grupoFaturamento") int grupoFaturamento, @PathVariable("tarefa") String tarefa, @PathVariable("idUsuario") long idUsuario) {
 		Integer qtdDeletado = this.distribuicaoService.desassociar(dataReferencia, idRegional, grupoFaturamento, tarefa, idUsuario);
-		return new ResponseEntity<>(qtdDeletado, HttpStatus.OK);
+		return new ResponseEntity<Integer>(qtdDeletado, HttpStatus.OK);
+	}
+	
+	@DeleteMapping("/desassociarindividual/{idDistribuicao}")
+	public ResponseEntity<?> desassociar(@PathVariable("idDistribuicao") long idDistribuicao) {
+		Integer qtdDeletado = this.distribuicaoService.desassociarIndividual(idDistribuicao);
+		return new ResponseEntity<Integer>(qtdDeletado, HttpStatus.OK);
 	}
 
 	@Override
@@ -85,6 +92,12 @@ public class DistribuicaoResource implements IDistribuicaoResource {
 	public ResponseEntity<?> getDistribuido(DistribuicaoFilter filter) {
 		List<DistribuidoProjection> lista = this.distribuicaoService.getDistribuido(filter);
 		return new ResponseEntity<List<DistribuidoProjection>>(lista, HttpStatus.OK);
+	}
+	
+	@GetMapping("/distribuidodetail")
+	public ResponseEntity<?> getDistribuidoDetail(DistribuicaoFilter filter) {
+		List<DistribuidoDetailProjection> lista = this.distribuicaoService.getDistribuidoDetail(filter);
+		return new ResponseEntity<List<DistribuidoDetailProjection>>(lista, HttpStatus.OK);
 	}
 	
 	@GetMapping("/listarcarga")

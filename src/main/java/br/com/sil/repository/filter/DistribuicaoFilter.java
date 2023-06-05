@@ -23,6 +23,7 @@ public class DistribuicaoFilter {
 	private int situacao;
 	private Integer grupoFaturamento;
 	private Integer tipoDistribuicao;
+	private String tarefa;
 	
 	@JsonFormat(pattern = "yyyy-MM-dd", shape = JsonFormat.Shape.STRING)
 	@DateTimeFormat(pattern = "yyyy-MM-dd")

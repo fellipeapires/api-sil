@@ -16,6 +16,7 @@ import br.com.sil.repository.filter.DistribuicaoFilter;
 import br.com.sil.repository.projection.CargaMobileProjection;
 import br.com.sil.repository.projection.DesassociadoProjection;
 import br.com.sil.repository.projection.DistribuicaoProjection;
+import br.com.sil.repository.projection.DistribuidoDetailProjection;
 import br.com.sil.repository.projection.DistribuidoProjection;
 import br.com.sil.service.interfaces.IDistribuicaoService;
 
@@ -56,6 +57,15 @@ public class DistribuicaoService implements IDistribuicaoService {
 		}
 		return qtd;
 	}
+	
+	public Integer desassociarIndividual(long idDistribuicao) {
+		DesassociadoProjection desassociado = this.distribuicaoRepository.getDesassociadoIndividual(idDistribuicao);
+		int qtd = this.distribuicaoRepository.desassociarIndividual(idDistribuicao);
+		if (qtd > 0 && desassociado != null) {
+			this.distribuicaoRepository.incluirDesassociado(desassociado.getIdUsuario(), desassociado.getIdLeitura());
+		}
+		return qtd;
+	}
 
 	@Override
 	public Distribuicao alterar(Distribuicao entity) {
@@ -74,6 +84,10 @@ public class DistribuicaoService implements IDistribuicaoService {
 	
 	public List<DistribuidoProjection> getDistribuido(DistribuicaoFilter filter) {
 		return this.distribuicaoRepository.getDistribuido(filter.getDataReferencia(), filter.getIdRegional(), filter.getGrupoFaturamento());
+	}
+	
+	public List<DistribuidoDetailProjection> getDistribuidoDetail(DistribuicaoFilter filter) {
+		return this.distribuicaoRepository.getDistribuidoDetail(filter.getIdRegional(), filter.getDataReferencia(), filter.getGrupoFaturamento(), filter.getTarefa(), filter.getIdUsuario());
 	}
 
 	public List<DistribuicaoProjection> getPendente(DistribuicaoFilter filter) {

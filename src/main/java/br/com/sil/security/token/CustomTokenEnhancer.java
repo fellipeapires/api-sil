@@ -33,6 +33,7 @@ public class CustomTokenEnhancer implements TokenEnhancer {
 		addInfo.put("id", usuarioSistema.getUsuario().getId());
 		addInfo.put("listaRegional", listaRegional);
 		addInfo.put("perfilAcesso", listaPerfilAcesso.get(0));
+		addInfo.put("versao", "1.0.5");
 		if (usuarioSistema.getUsuario().getSituacao() > 0 && !listaPerfilAcesso.get(0).getNome().equalsIgnoreCase("MOBILE")) {		
 			((DefaultOAuth2AccessToken) accessToken).setAdditionalInformation(addInfo);
 			return accessToken;

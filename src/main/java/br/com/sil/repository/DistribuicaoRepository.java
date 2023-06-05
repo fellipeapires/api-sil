@@ -15,6 +15,7 @@ import br.com.sil.repository.distribuicao.DistribuicaoRepositoryQuery;
 import br.com.sil.repository.projection.CargaMobileProjection;
 import br.com.sil.repository.projection.DesassociadoProjection;
 import br.com.sil.repository.projection.DistribuicaoProjection;
+import br.com.sil.repository.projection.DistribuidoDetailProjection;
 import br.com.sil.repository.projection.DistribuidoProjection;
 
 public interface DistribuicaoRepository extends JpaRepository<Distribuicao, Long>, DistribuicaoRepositoryQuery {
@@ -66,6 +67,13 @@ public interface DistribuicaoRepository extends JpaRepository<Distribuicao, Long
 			+ "AND A.CD_TAREFA_LEITURA = ?4 AND D.ID_USUARIO = ?5 AND D.FL_ASSOCIADO = 1 AND E.ID_RETORNO_LEITURA IS NULL ", nativeQuery = true)
 	public List<DesassociadoProjection> getDesassociado(Long idRegional, String dataReferencia, int grupoFaturamento, String tarefa, Long idUsuario);
 	
+	@Transactional
+	@Query(value="SELECT A.ID_USUARIO AS IDUSUARIO, A.ID_LEITURA AS IDLEITURA "
+			+ "FROM MED_DISTRIBUICAO_LEITURA_REGISTRO AS A "
+			+ "LEFT OUTER JOIN MED_RETORNO_LEITURA AS B ON B.ID_LEITURA = A.ID_LEITURA "
+			+ "WHERE A.ID_DISTRIBUICAO_LEITURA_REGISTRO = ?1 AND A.FL_ASSOCIADO = 1 AND B.ID_LEITURA IS NULL ", nativeQuery = true)
+	public DesassociadoProjection getDesassociadoIndividual(Long idDistribuicao);
+	
 	@Modifying
 	@Transactional
 	@Query(value="DELETE MED_DISTRIBUICAO_LEITURA_REGISTRO "
@@ -77,6 +85,14 @@ public interface DistribuicaoRepository extends JpaRepository<Distribuicao, Long
 			+ "WHERE A.ID_REGIONAL = ?1 AND C.DT_ANO_MES_REF = ?2 AND D.CD_GRUPO_FATURAMENTO = ?3 "
 			+ "AND B.CD_TAREFA_LEITURA = ?4 AND A.ID_USUARIO = ?5 AND E.ID_RETORNO_LEITURA IS NULL  ", nativeQuery = true)
 	public Integer desassociar(Long idRegional, String dataReferencia, int grupoFaturamento, String tarefa, Long idUsuario);
+	
+	@Modifying
+	@Transactional
+	@Query(value="DELETE MED_DISTRIBUICAO_LEITURA_REGISTRO "
+			+ "FROM MED_DISTRIBUICAO_LEITURA_REGISTRO AS A "
+			+ "LEFT OUTER JOIN MED_RETORNO_LEITURA AS B ON B.ID_LEITURA = A.ID_LEITURA "
+			+ "WHERE A.ID_DISTRIBUICAO_LEITURA_REGISTRO = ?1 AND B.ID_LEITURA IS NULL  ", nativeQuery = true)
+	public Integer desassociarIndividual(Long idDitribuicao);
 	
 	@Modifying
 	@Transactional
@@ -100,6 +116,32 @@ public interface DistribuicaoRepository extends JpaRepository<Distribuicao, Long
 			+ "GROUP BY B.ID_REGIONAL, D.CD_GRUPO_FATURAMENTO, B.DT_ANO_MES_REF, A.CD_TAREFA_LEITURA, E.ID_USUARIO, E.NM_NOME "
 			+ "ORDER BY E.NM_NOME, A.CD_TAREFA_LEITURA ASC", nativeQuery = true)
 	public List<DistribuidoProjection> getDistribuido(LocalDate dataReferencia, Long idRegional, Integer grupoFaturamento);
+	
+	@Transactional
+	@Query(value="SELECT "
+			+ "	D.ID_DISTRIBUICAO_LEITURA_REGISTRO AS IDDISTRIBUICAO "
+			+ "	,A.NR_INSTALACAO AS INSTALACAO "
+			+ "	,A.NR_MEDIDOR AS MEDIDOR "
+			+ "	,CONCAT(RTRIM(LTRIM(LEFT(A.NM_ENDERECO, 62))), ', ', RTRIM(LTRIM(SUBSTRING(A.NM_ENDERECO, 62, 10))), ' ', RTRIM(LTRIM(RIGHT(A.NM_ENDERECO, 10)))) AS ENDERECO "
+			+ "	,RTRIM(LTRIM(A.NM_COMPLEMENTO)) AS COMPLEMENTO "
+			+ "	,RTRIM(LTRIM(A.NM_MUNICIPIO)) AS MUNICIPIO "
+			+ "	,CASE WHEN E.ID_LEITURA IS NOT NULL THEN 1 ELSE 0 END AS STATUS "
+			+ "FROM "
+			+ "	MED_LEITURA AS A "
+			+ "	INNER JOIN MED_IMPORTACAO AS B ON B.ID_IMPORTACAO = A.ID_IMPORTACAO "
+			+ "	INNER JOIN MED_GRUPO_FATURAMENTO AS C ON C.ID_GRUPO_FATURAMENTO = B.ID_GRUPO_FATURAMENTO "
+			+ "	INNER JOIN MED_DISTRIBUICAO_LEITURA_REGISTRO AS D ON D.ID_LEITURA = A.ID_LEITURA "
+			+ "	LEFT OUTER JOIN MED_RETORNO_LEITURA AS E ON E.ID_LEITURA =  A.ID_LEITURA AND E.FL_ATIVO = 1 "
+			+ "WHERE "
+			+ "	B.ID_REGIONAL = ?1 "
+			+ "	AND B.DT_ANO_MES_REF = ?2 "
+			+ "	AND C.CD_GRUPO_FATURAMENTO = ?3 "
+			+ "	AND A.CD_TAREFA_LEITURA = ?4 "
+			+ "	AND D.ID_USUARIO = ?5 "
+			+ "ORDER BY "
+			+ "	STATUS "
+			+ "	,CONCAT(RTRIM(LTRIM(LEFT(A.NM_ENDERECO, 62))), ', ', RTRIM(LTRIM(SUBSTRING(A.NM_ENDERECO, 62, 10))), ' ', RTRIM(LTRIM(RIGHT(A.NM_ENDERECO, 10)))) ASC", nativeQuery = true)
+	public List<DistribuidoDetailProjection> getDistribuidoDetail(Long idRegional, LocalDate dataReferencia, int grupoFaturamento, String tarefa, long idUsuario);
 	
 	@Transactional
 	@Query(value = "SELECT 0 AS IDLEITURA, B.ID_REGIONAL AS IDREGIONAL, D.CD_GRUPO_FATURAMENTO AS GRUPOFATURAMENTO, B.DT_ANO_MES_REF AS DATAREFERENCIA, "
