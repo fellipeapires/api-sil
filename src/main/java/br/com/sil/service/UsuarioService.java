@@ -105,7 +105,9 @@ public class UsuarioService implements IUsuarioService {
 	}
 	
 	public Integer registrarAcesso(AcessoDto entity) {
-		return this.usuarioRepository.resgistrarAcesso(entity.getIdUsuario(), entity.getBrowser(), entity.getIp(), LocalDateTime.now(ZoneId.of("America/Sao_Paulo")));
+		String ip = entity.getIp() != null ? entity.getIp() : "NAO FOI POSSIVEL OBTER IP";
+		String browser = entity.getBrowser() != null ? entity.getBrowser() : "NAO FOI POSSIVEL OBTER BROWSER";
+		return this.usuarioRepository.resgistrarAcesso(entity.getIdUsuario(), browser, ip, LocalDateTime.now(ZoneId.of("America/Sao_Paulo")));
 	}
 
 	@Override
