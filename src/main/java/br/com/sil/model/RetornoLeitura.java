@@ -3,6 +3,7 @@ package br.com.sil.model;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -130,5 +131,11 @@ public class RetornoLeitura implements Serializable {
 	@NotNull
 	@Column(name = "FL_ATIVO")
 	private int ativo;
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(leitura.getId());
+	}
+	
 
 }

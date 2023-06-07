@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -67,15 +68,13 @@ public class RetornoLeituraService implements IRetornoLeituraService {
 	
 	public List<Long> lancarLeituraMobile(List<RetornoLeituraMobileDto> listaEntity) {
 		try {
+			TimeUnit.SECONDS.sleep(1);
 			List<Long> listaIdLeitura = new ArrayList<>();
 			List<RetornoLeitura> listaSalva = new ArrayList<>();
 			for (RetornoLeituraMobileDto retornoMobile: listaEntity) {
 				if (this.isExiste(retornoMobile.getIdLeitura()) == 0) {
 					// ocorrencia é o id do objeto
 					Ocorrencia ocorrencia = this.ocorrenciaService.buscarPorId(retornoMobile.getOcorrencia());
-					/*if ((ocorrencia.getTipoOcorrencia() == OcorrenciaTipo.IMPEDIMENTO.getCodigo() && retornoMobile.getLeituraMedida() > 0) || (ocorrencia.getTipoOcorrencia() == OcorrenciaTipo.IMPEDIMENTO.getCodigo() && retornoMobile.getQtdFoto() == 0)) {
-						return null;
-					}*/
 					Leitura leitura = this.leituraService.buscarPorId(retornoMobile.getIdLeitura());
 					Usuario usuario = this.usuarioService.buscarPorId(retornoMobile.getIdFuncionario());
 					Regional regional = this.regionalService.buscarPorId(leitura.getImportacao().getRegional().getId());
@@ -105,15 +104,7 @@ public class RetornoLeituraService implements IRetornoLeituraService {
 					retornoLeitura.setObservacao(retornoMobile.getObservacao() != null ? retornoMobile.getObservacao() : "");
 					retornoLeitura.setFlagMedia(0);
 					retornoLeitura.setIsFoto(retornoMobile.getIsFoto() > 0 ? RetornoLeituraInfo.COM_FOTO.getCodigo() : RetornoLeituraInfo.SEM_FOTO.getCodigo());
-					//retornoLeitura.setIsFoto(retornoMobile.getIsFoto());
 					retornoLeitura.setAtivo(StatusRegitro.ATIVO.getCodigo());
-					//RetornoLeitura retornoLeituraSalvo = this.retornoLeituraRepository.save(retornoLeitura);
-					/*if (retornoLeituraSalvo != null) {
-						this.retornoLeituraRepository.setLogLancamentoLeitura(entity.getIdUsuarioAlteracao(), retornoLeitura.getId(), retornoLeitura.getId(), DescricaoLog.LANCAMENTO_LEITURA.getNome(), LocalDateTime.now());
-						if (entity.getListaFoto().size() > 0) {					
-							this.retornoFotoService.upload(entity.getListaFoto(), entity.getIdUsuarioAlteracao());
-						}
-					}*/
 					listaSalva.add(retornoLeitura);
 				}
 				listaIdLeitura.add(retornoMobile.getIdLeitura());
@@ -127,9 +118,33 @@ public class RetornoLeituraService implements IRetornoLeituraService {
 		}
 		return null;
 	}
+	
+	//NAO ESTA SENDO USADO
+	public RetornoLeitura lancarLeitura2(RetornoLeituraDto entity) {
+		try {
+			Ocorrencia ocorrencia = this.ocorrenciaService.findByCodigo(entity.getOcorrencia()).get();
+			if ((ocorrencia.getTipoOcorrencia() == OcorrenciaTipo.IMPEDIMENTO.getCodigo() && entity.getLeitura() > 0) || (ocorrencia.getTipoOcorrencia() == OcorrenciaTipo.IMPEDIMENTO.getCodigo() && entity.getQtdFoto() == 0)) {
+				return null;
+			}
+			Double variacao = 0.0;//(double) (((retornoLeitura.getLeituraMedida() - retornoLeitura.getLeituraAnterior()) * 100) / (retornoLeitura.getLeitura().getMedia3Meses() == 0 ? 1 : retornoLeitura.getLeitura().getMedia3Meses()));
+			int isFoto = (entity.getQtdFoto() > 0 ? RetornoLeituraInfo.COM_FOTO.getCodigo() : RetornoLeituraInfo.SEM_FOTO.getCodigo());
+			RetornoLeitura retornoLeituraSalvo = this.retornoLeituraRepository.lancarLeitura(entity.getIdLeitura(), entity.getIdUsuario(), ocorrencia.getId(), entity.getLeitura(), variacao, entity.getDataLeitura(), "0", "0", RetornoLeituraInfo.NAO_ANALIZADO.getCodigo(), entity.getObservacao(), 0, isFoto, StatusRegitro.ATIVO.getCodigo());
+			if (retornoLeituraSalvo != null) {
+				this.retornoLeituraRepository.setLogLancamentoLeitura(entity.getIdUsuarioAlteracao(), retornoLeituraSalvo.getId(), retornoLeituraSalvo.getId(), DescricaoLog.LANCAMENTO_LEITURA.getNome(), LocalDateTime.now(ZoneId.of("America/Sao_Paulo")));
+				if (entity.getListaFoto().size() > 0) {					
+					this.retornoFotoService.upload(entity.getListaFoto(), entity.getIdUsuarioAlteracao());
+				}
+			}
+			return retornoLeituraSalvo;
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		return null;
+	}
 
 	public RetornoLeitura lancarLeitura(RetornoLeituraDto entity) {
 		try {
+			TimeUnit.SECONDS.sleep(1);
 			if (this.isExiste(entity.getIdLeitura()) > 0) {
 				return null;
 			}
@@ -183,6 +198,7 @@ public class RetornoLeituraService implements IRetornoLeituraService {
 	
 	public RetornoLeitura lancarRepasse(RetornoLeituraDto entity) {
 		try {
+			TimeUnit.SECONDS.sleep(1);
 			if (this.isExiste(entity.getIdLeituraRepasse()) > 0) {
 				return null;
 			}

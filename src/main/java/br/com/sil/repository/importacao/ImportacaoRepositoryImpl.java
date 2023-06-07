@@ -29,6 +29,8 @@ public class ImportacaoRepositoryImpl implements ImportacaoRepositoryQuery {
 
 		Predicate[] predicates = criarRestricoes(filter, builder, root);
 		criteria.where(predicates);
+		
+		criteria.orderBy(builder.desc(root.get(Importacao_.dataImportacao)));
 
 		TypedQuery<Importacao> query = manager.createQuery(criteria);
 		return query.getResultList();
@@ -45,8 +47,8 @@ public class ImportacaoRepositoryImpl implements ImportacaoRepositoryQuery {
 		if (filter.getIdRegional() != null) {
 			predicates.add(builder.equal(root.join(Importacao_.regional).<Long>get("id"), filter.getIdRegional()));
 		}
-		if (filter.getIdGrupoFaturamento() != null) {
-			predicates.add(builder.equal(root.join(Importacao_.grupoFaturamento).<Long>get("id"), filter.getIdGrupoFaturamento()));
+		if (filter.getGrupoFaturamento() != null) {
+			predicates.add(builder.equal(root.join(Importacao_.grupoFaturamento).<Integer>get("codigo"), filter.getGrupoFaturamento()));
 		}
 		if (filter.getIdUsuario() != null) {
 			predicates.add(builder.equal(root.join(Importacao_.usuario).<Long>get("id"), filter.getIdUsuario()));
