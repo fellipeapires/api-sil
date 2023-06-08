@@ -39,6 +39,9 @@ public class UsuarioRepositoryImpl implements UsuarioRepositoryQuery {
 		if (filter.getNome() != null) {
 			predicates.add(builder.like(builder.lower(root.get(Usuario_.nome)), filter.getNome() + "%"));
 		}
+		if (filter.getMatricula() != null) {
+			predicates.add(builder.equal(builder.lower(root.get(Usuario_.matricula)), filter.getMatricula()));
+		}
 		if (filter.getLogin() != null) {
 			predicates.add(builder.like(builder.lower(root.get(Usuario_.login)), filter.getLogin() + "%"));
 		}

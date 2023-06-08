@@ -43,7 +43,6 @@ public class RetornoLeituraRepositoryImpl implements RetornoLeituraRepositoryQue
 		TypedQuery<RetornoLeitura> query = manager.createQuery(criteria);
 		adicionarRestricoesDePaginacao(query, pageable);
 		return new PageImpl<>(query.getResultList(), pageable, total(filter));
-		//return query.getResultList();
 	}
 
 	private Predicate[] criarRestricoes(RetornoLeituraFilter filter, CriteriaBuilder builder, Root<RetornoLeitura> root) {

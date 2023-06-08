@@ -10,6 +10,7 @@ import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.security.oauth2.provider.token.TokenEnhancer;
 
+import br.com.sil.config.ApiProperty;
 import br.com.sil.model.PerfilAcesso;
 import br.com.sil.model.Regional;
 import br.com.sil.security.UsuarioSistema;
@@ -17,6 +18,9 @@ import br.com.sil.service.PerfilAcessoService;
 import br.com.sil.service.RegionalService;
 
 public class CustomTokenEnhancer implements TokenEnhancer {
+	
+	@Autowired
+	ApiProperty apiProperty;
 
 	@Autowired
 	private PerfilAcessoService perfilAcessoService;
@@ -33,7 +37,7 @@ public class CustomTokenEnhancer implements TokenEnhancer {
 		addInfo.put("id", usuarioSistema.getUsuario().getId());
 		addInfo.put("listaRegional", listaRegional);
 		addInfo.put("perfilAcesso", listaPerfilAcesso.get(0));
-		addInfo.put("versao", "1.0.6");
+		addInfo.put("versao", this.apiProperty.getVersao());
 		if (usuarioSistema.getUsuario().getSituacao() > 0 && !listaPerfilAcesso.get(0).getNome().equalsIgnoreCase("MOBILE")) {		
 			((DefaultOAuth2AccessToken) accessToken).setAdditionalInformation(addInfo);
 			return accessToken;

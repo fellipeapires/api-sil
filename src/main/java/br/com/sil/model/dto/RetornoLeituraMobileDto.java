@@ -31,6 +31,7 @@ public class RetornoLeituraMobileDto {
 	private int media;
 	private int enviado;
 	private int isFoto;
+	private String versaoApp;
 
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", shape = JsonFormat.Shape.STRING)
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")

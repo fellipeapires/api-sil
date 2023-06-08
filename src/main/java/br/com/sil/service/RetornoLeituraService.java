@@ -105,6 +105,7 @@ public class RetornoLeituraService implements IRetornoLeituraService {
 					retornoLeitura.setFlagMedia(0);
 					retornoLeitura.setIsFoto(retornoMobile.getIsFoto() > 0 ? RetornoLeituraInfo.COM_FOTO.getCodigo() : RetornoLeituraInfo.SEM_FOTO.getCodigo());
 					retornoLeitura.setAtivo(StatusRegitro.ATIVO.getCodigo());
+					retornoLeitura.setVersaoApp(retornoMobile.getVersaoApp());
 					listaSalva.add(retornoLeitura);
 				}
 				listaIdLeitura.add(retornoMobile.getIdLeitura());
@@ -182,6 +183,7 @@ public class RetornoLeituraService implements IRetornoLeituraService {
 			retornoLeitura.setFlagMedia(0);
 			retornoLeitura.setIsFoto(entity.getQtdFoto() > 0 ? RetornoLeituraInfo.COM_FOTO.getCodigo() : RetornoLeituraInfo.SEM_FOTO.getCodigo());
 			retornoLeitura.setAtivo(StatusRegitro.ATIVO.getCodigo());
+			retornoLeitura.setVersaoApp("WEB");
 			RetornoLeitura retornoLeituraSalvo = this.retornoLeituraRepository.save(retornoLeitura);
 			if (retornoLeituraSalvo != null) {
 				this.retornoLeituraRepository.setLogLancamentoLeitura(entity.getIdUsuarioAlteracao(), retornoLeitura.getId(), retornoLeitura.getId(), DescricaoLog.LANCAMENTO_LEITURA.getNome(), LocalDateTime.now(ZoneId.of("America/Sao_Paulo")));
@@ -236,6 +238,7 @@ public class RetornoLeituraService implements IRetornoLeituraService {
 			retornoLeitura.setFlagMedia(0);
 			retornoLeitura.setIsFoto(entity.getQtdFoto() > 0 ? RetornoLeituraInfo.COM_FOTO.getCodigo() : RetornoLeituraInfo.SEM_FOTO.getCodigo());
 			retornoLeitura.setAtivo(StatusRegitro.ATIVO.getCodigo());
+			retornoLeitura.setVersaoApp("WEB");
 			RetornoLeitura retornoLeituraSalvo = this.retornoLeituraRepository.save(retornoLeitura);
 			if (retornoLeituraSalvo != null) {
 				this.retornoLeituraRepository.setLogLancamentoLeitura(entity.getIdUsuarioAlteracao(), retornoLeitura.getId(), retornoLeitura.getId(),  DescricaoLog.LANCAMENTO_REPASSE.getNome(), LocalDateTime.now(ZoneId.of("America/Sao_Paulo")));

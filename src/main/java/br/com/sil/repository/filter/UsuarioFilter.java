@@ -20,6 +20,7 @@ public class UsuarioFilter {
 	private long idRegional;
 	private long idPerfilAcesso;
 	private int situacao;
+	private String matricula;
 	
 	@JsonFormat(pattern = "yyyy-MM-dd", shape = JsonFormat.Shape.STRING)
 	@DateTimeFormat(pattern = "yyyy-MM-dd")

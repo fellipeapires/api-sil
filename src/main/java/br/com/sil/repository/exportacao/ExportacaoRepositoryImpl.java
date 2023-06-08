@@ -29,6 +29,8 @@ public class ExportacaoRepositoryImpl implements ExportacaoRepositoryQuery {
 
 		Predicate[] predicates = criarRestricoes(filter, builder, root);
 		criteria.where(predicates);
+		
+		criteria.orderBy(builder.desc(root.get(Exportacao_.id)));
 
 		TypedQuery<Exportacao> query = manager.createQuery(criteria);
 		return query.getResultList();

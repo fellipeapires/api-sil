@@ -27,6 +27,7 @@ public class RetornoLeituraDto {
 	private String observacao;
 	private int qtdFoto;
 	private List<RetornoFoto> listaFoto;
+	private String versaoApp;
 
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", shape = JsonFormat.Shape.STRING)
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
