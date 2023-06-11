@@ -23,6 +23,7 @@ public class ApiSilApplication extends SpringBootServletInitializer {
 	public static void main(String[] args) {
 		SpringApplication.run(ApiSilApplication.class, args);
 	}
+	
 	public static <T> T getBean(Class<T> type) {
 		return APPLICATION_CONTEXT.getBean(type);
 	}
