@@ -34,8 +34,10 @@ public class RetornoLeituraRepositoryImpl implements RetornoLeituraRepositoryQue
 		Predicate[] predicates = criarRestricoes(filter, builder, root);
 		criteria.where(predicates);
 		
-		if (filter.getVariacaoLeitura() != null ) {
+		if (filter.getTipoVariacao().equals("NEGATIVO")) {
 			criteria.orderBy(builder.asc(root.get(RetornoLeitura_.variacaoLeitura)));			
+		} else if (filter.getTipoVariacao().equals("POSITIVO")) {
+			criteria.orderBy(builder.desc(root.get(RetornoLeitura_.variacaoLeitura)));	
 		} else {			
 			criteria.orderBy(builder.desc(root.get(RetornoLeitura_.dataLeitura)));
 		}

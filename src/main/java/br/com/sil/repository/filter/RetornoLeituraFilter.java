@@ -28,6 +28,7 @@ public class RetornoLeituraFilter {
 	private String segmento;
 	private String msgMobile;
 	private Integer operador;
+	private String tipoVariacao;
 	private Double variacaoLeitura;
 	private Integer ativo;
 	private Integer tipoOcorrencia;
