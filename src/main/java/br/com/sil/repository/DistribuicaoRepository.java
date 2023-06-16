@@ -19,7 +19,7 @@ import br.com.sil.repository.projection.DistribuidoDetailProjection;
 import br.com.sil.repository.projection.DistribuidoProjection;
 
 public interface DistribuicaoRepository extends JpaRepository<Distribuicao, Long>, DistribuicaoRepositoryQuery {
-
+/*
 	@Modifying
 	@Transactional
 	@Query(value = "INSERT INTO MED_DISTRIBUICAO_LEITURA_REGISTRO (ID_LEITURA, ID_REGIONAL, ID_USUARIO, FL_ASSOCIADO, DT_DISTRIBUICAO) "
@@ -33,6 +33,19 @@ public interface DistribuicaoRepository extends JpaRepository<Distribuicao, Long
 			+ "AND RTRIM(LTRIM(LEFT(A.NM_ENDERECO, 62))) = ISNULL(?6, RTRIM(LTRIM(LEFT(A.NM_ENDERECO, 62)))) "
 			+ "AND A.ID_LEITURA = ISNULL((CASE WHEN ?7 = 0 THEN NULL ELSE ?7 END), A.ID_LEITURA) "
 			+ "AND C.ID_DISTRIBUICAO_LEITURA_REGISTRO IS NULL AND E.ID_LEITURA IS NULL ", nativeQuery = true)
+	public int incluir(Long idRegional, LocalDate dataReferencia, int grupoFaturamento, Long idUsuario, String tarefaLeitura, String endereco, Long idLeitura, int associado, LocalDateTime dataDistribuicao);
+	*/
+	
+	@Modifying
+	@Transactional
+	@Query(value = "INSERT INTO MED_DISTRIBUICAO_LEITURA_REGISTRO (ID_LEITURA, ID_REGIONAL, ID_USUARIO, FL_ASSOCIADO, DT_DISTRIBUICAO) "
+			+ "SELECT A.ID_LEITURA, ?1, ?4, ?8, ?9 " 
+			+ "FROM MED_LEITURA AS A "
+			+ "INNER JOIN MED_IMPORTACAO AS B ON A.ID_IMPORTACAO = B.ID_IMPORTACAO "
+			+ "INNER JOIN MED_GRUPO_FATURAMENTO AS D ON D.ID_GRUPO_FATURAMENTO = B.ID_GRUPO_FATURAMENTO "
+			+ "WHERE B.ID_REGIONAL = ?1 AND B.DT_ANO_MES_REF = ?2 AND D.CD_GRUPO_FATURAMENTO = ?3 AND A.CD_TAREFA_LEITURA = ?5 "
+			+ "AND RTRIM(LTRIM(LEFT(A.NM_ENDERECO, 62))) = ISNULL(?6, RTRIM(LTRIM(LEFT(A.NM_ENDERECO, 62)))) "
+			+ "AND A.ID_LEITURA = ISNULL((CASE WHEN ?7 = 0 THEN NULL ELSE ?7 END), A.ID_LEITURA) ", nativeQuery = true)
 	public int incluir(Long idRegional, LocalDate dataReferencia, int grupoFaturamento, Long idUsuario, String tarefaLeitura, String endereco, Long idLeitura, int associado, LocalDateTime dataDistribuicao);
 	
 	@Modifying
