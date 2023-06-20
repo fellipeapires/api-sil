@@ -128,5 +128,9 @@ public class DistribuicaoService implements IDistribuicaoService {
 	public void zerarDesassociadoMobile(DistribuicaoDto entity) {
 		this.distribuicaoRepository.zerarDesassociadoMobile(entity.getIdUsuario(), entity.getListaIdLeitura());
 	}
+	
+	public void marcarNoColetor(DistribuicaoDto entity) {
+		this.distribuicaoRepository.marcarNoColetor(entity.getDataReferencia(), entity.getIdRegional());
+	}
 
 }

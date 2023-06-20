@@ -135,4 +135,10 @@ public class DistribuicaoResource implements IDistribuicaoResource {
 		this.distribuicaoService.zerarDesassociadoMobile(entity);
 		return new ResponseEntity<Boolean>(true, HttpStatus.OK);
 	}
+	
+	@PutMapping("/marcarnocoletor")
+	public ResponseEntity<?> marcarNoColetor(@RequestBody DistribuicaoDto entity) {
+		this.distribuicaoService.marcarNoColetor(entity);
+		return new ResponseEntity<Integer>(0, HttpStatus.OK);
+	}
 }

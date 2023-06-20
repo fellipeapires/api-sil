@@ -82,7 +82,6 @@ public class ImportacaoResource implements IImportacaoResource {
 			if (importado) {
 				return new ResponseEntity<Boolean>(importado, HttpStatus.OK);
 			} else {
-				//return new ResponseEntity<Boolean>(importado, HttpStatus.EXPECTATION_FAILED);
 				return new ResponseEntity<Boolean>(importado, HttpStatus.OK);
 			}
 		} else {
