@@ -55,6 +55,12 @@ public class DistribuicaoResource implements IDistribuicaoResource {
 		return new ResponseEntity<Integer>(qtdDeletado, HttpStatus.OK);
 	}
 	
+	@PostMapping("/desassociarporendereco")
+	public ResponseEntity<?> desassociarPorEndereco(@RequestBody DistribuicaoDto entity) {
+		Integer qtd = this.distribuicaoService.desassociarPorEndereco(entity);
+		return new ResponseEntity<Integer>(qtd, HttpStatus.OK);
+	}
+	
 	@DeleteMapping("/desassociarindividual/{idDistribuicao}")
 	public ResponseEntity<?> desassociar(@PathVariable("idDistribuicao") long idDistribuicao) {
 		Integer qtdDeletado = this.distribuicaoService.desassociarIndividual(idDistribuicao);

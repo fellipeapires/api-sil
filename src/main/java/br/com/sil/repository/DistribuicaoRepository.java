@@ -89,6 +89,26 @@ public interface DistribuicaoRepository extends JpaRepository<Distribuicao, Long
 	
 	@Modifying
 	@Transactional
+	@Query(value="DELETE "
+			+ "	MED_DISTRIBUICAO_LEITURA_REGISTRO "
+			+ "FROM "
+			+ "	MED_LEITURA AS A "
+			+ "		INNER JOIN MED_IMPORTACAO AS B ON A.ID_IMPORTACAO = B.ID_IMPORTACAO "
+			+ "		INNER JOIN MED_GRUPO_FATURAMENTO AS D ON D.ID_GRUPO_FATURAMENTO = B.ID_GRUPO_FATURAMENTO "
+			+ "		INNER JOIN MED_DISTRIBUICAO_LEITURA_REGISTRO AS C ON C.ID_LEITURA = A.ID_LEITURA "
+			+ "		LEFT OUTER JOIN MED_RETORNO_LEITURA AS E ON E.ID_LEITURA = A.ID_LEITURA AND E.ID_REGIONAL = ?2 AND E.ID_GRUPO_FATURAMENTO = B.ID_GRUPO_FATURAMENTO "
+			+ "WHERE "
+			+ "	B.DT_ANO_MES_REF = ?1 AND "
+			+ "	B.ID_REGIONAL = ?2 AND "
+			+ "	D.CD_GRUPO_FATURAMENTO = ?3 AND "
+			+ "	A.CD_TAREFA_LEITURA = ?4 AND "
+			+ "	RTRIM(LTRIM(LEFT(A.NM_ENDERECO, 62))) = ?5 AND "
+			+ "	C.ID_USUARIO = ?6 AND "
+			+ "	E.ID_LEITURA IS NULL ", nativeQuery = true)
+	public Integer desassociarPorEndereco(LocalDate dataReferencia, Long idRegional, int grupoFaturamento, String tarefa, String endereco, Long idUsuario);
+	
+	@Modifying
+	@Transactional
 	@Query(value="DELETE MED_DISTRIBUICAO_LEITURA_REGISTRO "
 			+ "FROM MED_DISTRIBUICAO_LEITURA_REGISTRO AS A "
 			+ "LEFT OUTER JOIN MED_RETORNO_LEITURA AS B ON B.ID_LEITURA = A.ID_LEITURA "
@@ -99,6 +119,29 @@ public interface DistribuicaoRepository extends JpaRepository<Distribuicao, Long
 	@Transactional
 	@Query(value="INSERT INTO MED_DESASSOCIADO (ID_USUARIO, ID_LEITURA) VALUES (?1, ?2)", nativeQuery = true)
 	public void incluirDesassociado(Long idUsuario, Long idLeitura);
+	
+	@Modifying
+	@Transactional
+	@Query(value="INSERT INTO MED_DESASSOCIADO (ID_USUARIO, ID_LEITURA) "
+			+ "SELECT "
+			+ "	C.ID_USUARIO "
+			+ "	,C.ID_LEITURA "
+			+ "FROM "
+			+ "	MED_LEITURA AS A "
+			+ "		INNER JOIN MED_IMPORTACAO AS B ON A.ID_IMPORTACAO = B.ID_IMPORTACAO "
+			+ "		INNER JOIN MED_GRUPO_FATURAMENTO AS D ON D.ID_GRUPO_FATURAMENTO = B.ID_GRUPO_FATURAMENTO "
+			+ "		INNER JOIN MED_DISTRIBUICAO_LEITURA_REGISTRO AS C ON C.ID_LEITURA = A.ID_LEITURA "
+			+ "		LEFT OUTER JOIN MED_RETORNO_LEITURA AS E ON E.ID_LEITURA = A.ID_LEITURA AND E.ID_REGIONAL = ?2 AND E.ID_GRUPO_FATURAMENTO = B.ID_GRUPO_FATURAMENTO "
+			+ "WHERE "
+			+ "	B.DT_ANO_MES_REF = ?1 AND "
+			+ "	B.ID_REGIONAL = ?2 AND "
+			+ "	D.CD_GRUPO_FATURAMENTO = ?3 AND "
+			+ "	A.CD_TAREFA_LEITURA = ?4 AND "
+			+ "	RTRIM(LTRIM(LEFT(A.NM_ENDERECO, 62))) = ?5 AND "
+			+ "	C.ID_USUARIO = ?6 AND "
+			+ "	C.FL_ASSOCIADO = 1 AND "
+			+ "	E.ID_LEITURA IS NULL ", nativeQuery = true)
+	public void incluirDesassociadoPorEndereco(LocalDate dataReferencia, Long idRegional, int grupoFaturamento, String tarefa, String endereco, Long idUsuario);
 	
 	@Modifying
 	@Transactional

@@ -66,11 +66,16 @@ public class DistribuicaoService implements IDistribuicaoService {
 		}
 		return qtd;
 	}
+	
+	public Integer desassociarPorEndereco(DistribuicaoDto entity) {
+		this.distribuicaoRepository.incluirDesassociadoPorEndereco(entity.getDataReferencia(), entity.getIdRegional(), entity.getGrupoFaturamento(), entity.getTarefa(), entity.getEndereco(), entity.getIdUsuario());
+		return this.distribuicaoRepository.desassociarPorEndereco(entity.getDataReferencia(), entity.getIdRegional(), entity.getGrupoFaturamento(), entity.getTarefa(), entity.getEndereco(), entity.getIdUsuario());
+	}
 
 	@Override
 	public Distribuicao alterar(Distribuicao entity) {
 		return this.distribuicaoRepository.save(entity);
-	}
+	}     
 
 	@Override
 	public Distribuicao buscarPorId(long id) {
