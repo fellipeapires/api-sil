@@ -68,11 +68,11 @@ public class RetornoLeituraService implements IRetornoLeituraService {
 	
 	public List<Long> lancarLeituraMobile(List<RetornoLeituraMobileDto> listaEntity) {
 		try {
-			TimeUnit.SECONDS.sleep(1);
+			//TimeUnit.SECONDS.sleep(1);
 			List<Long> listaIdLeitura = new ArrayList<>();
 			List<RetornoLeitura> listaSalva = new ArrayList<>();
 			for (RetornoLeituraMobileDto retornoMobile: listaEntity) {
-				if (this.isExiste(retornoMobile.getIdLeitura()) == 0) {
+				//if (this.isExiste(retornoMobile.getIdLeitura()) == 0) {
 					// ocorrencia é o id do objeto
 					Ocorrencia ocorrencia = this.ocorrenciaService.buscarPorId(retornoMobile.getOcorrencia());
 					Leitura leitura = this.leituraService.buscarPorId(retornoMobile.getIdLeitura());
@@ -107,7 +107,7 @@ public class RetornoLeituraService implements IRetornoLeituraService {
 					retornoLeitura.setAtivo(StatusRegitro.ATIVO.getCodigo());
 					retornoLeitura.setVersaoApp(retornoMobile.getVersaoApp());
 					listaSalva.add(retornoLeitura);
-				}
+				//}
 				listaIdLeitura.add(retornoMobile.getIdLeitura());
 			}
 			if (listaSalva.size() > 0) {				
@@ -424,7 +424,7 @@ public class RetornoLeituraService implements IRetornoLeituraService {
 	}
 	
 	public RetornoLeituraClienteDto getRetornoLeituraCliente(RetornoLeituraFilter filter) {
-		RetornoLeituraClienteProjection projection = this.retornoLeituraRepository.getRetornoLeituraCliente(filter.getIdRegional(), filter.getDataReferencia(), filter.getGrupoFaturamento(), filter.getInstalacao(), filter.getMedidor());
+		RetornoLeituraClienteProjection projection = this.retornoLeituraRepository.getRetornoLeituraCliente(filter.getIdRegional(), filter.getDataReferencia(), filter.getInstalacao(), filter.getMedidor());
 		RetornoLeituraClienteDto dto = new RetornoLeituraClienteDto();
 		if (projection != null) {
 			dto.setIdLeitura(projection.getIdLeitura());
@@ -450,7 +450,6 @@ public class RetornoLeituraService implements IRetornoLeituraService {
 				dto.setSegmento("REFRIGERACAO");
 			} else {
 				dto.setSegmento("OUTROS");
-				//(projection.getSegmento().equalsIgnoreCase("03") || projection.getSegmento().equalsIgnoreCase("07") || projection.getSegmento().equalsIgnoreCase("18"))
 			}
 			return dto;
 		} else {

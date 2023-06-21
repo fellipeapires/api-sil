@@ -321,11 +321,11 @@ public interface RetornoLeituraRepository extends JpaRepository<RetornoLeitura, 
 			+ "WHERE "
 			+ "	B.ID_REGIONAL = ?1 "
 			+ "	AND B.DT_ANO_MES_REF = ?2 "
-			+ "	AND D.CD_GRUPO_FATURAMENTO = ?3 "
-			+ "	AND A.NR_INSTALACAO LIKE CASE WHEN ?4 != '0' THEN CONCAT('%', ?4) ELSE '%' END "
-			+ "	AND A.NR_MEDIDOR LIKE CASE WHEN ?5 != '0' THEN CONCAT('%', ?5) ELSE '%' END "
+		//	+ "	AND D.CD_GRUPO_FATURAMENTO = ?3 "
+			+ "	AND A.NR_INSTALACAO LIKE CASE WHEN ?3 != '0' THEN CONCAT('%', ?3) ELSE '%' END "
+			+ "	AND A.NR_MEDIDOR LIKE CASE WHEN ?4 != '0' THEN CONCAT('%', ?4) ELSE '%' END "
 			+ "	AND C.FL_ATIVO = 1", nativeQuery = true)
-	public RetornoLeituraClienteProjection getRetornoLeituraCliente(Long idRegional, LocalDate dataReferencia, int grupoFaturamento, String instalacao, String medidor);
+	public RetornoLeituraClienteProjection getRetornoLeituraCliente(Long idRegional, LocalDate dataReferencia, String instalacao, String medidor);
 	
 	@Modifying
 	@Transactional
