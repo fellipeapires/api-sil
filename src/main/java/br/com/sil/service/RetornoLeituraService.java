@@ -119,29 +119,6 @@ public class RetornoLeituraService implements IRetornoLeituraService {
 		}
 		return null;
 	}
-	
-	//NAO ESTA SENDO USADO
-	public RetornoLeitura lancarLeitura2(RetornoLeituraDto entity) {
-		try {
-			Ocorrencia ocorrencia = this.ocorrenciaService.findByCodigo(entity.getOcorrencia()).get();
-			if ((ocorrencia.getTipoOcorrencia() == OcorrenciaTipo.IMPEDIMENTO.getCodigo() && entity.getLeitura() > 0) || (ocorrencia.getTipoOcorrencia() == OcorrenciaTipo.IMPEDIMENTO.getCodigo() && entity.getQtdFoto() == 0)) {
-				return null;
-			}
-			Double variacao = 0.0;//(double) (((retornoLeitura.getLeituraMedida() - retornoLeitura.getLeituraAnterior()) * 100) / (retornoLeitura.getLeitura().getMedia3Meses() == 0 ? 1 : retornoLeitura.getLeitura().getMedia3Meses()));
-			int isFoto = (entity.getQtdFoto() > 0 ? RetornoLeituraInfo.COM_FOTO.getCodigo() : RetornoLeituraInfo.SEM_FOTO.getCodigo());
-			RetornoLeitura retornoLeituraSalvo = this.retornoLeituraRepository.lancarLeitura(entity.getIdLeitura(), entity.getIdUsuario(), ocorrencia.getId(), entity.getLeitura(), variacao, entity.getDataLeitura(), "0", "0", RetornoLeituraInfo.NAO_ANALIZADO.getCodigo(), entity.getObservacao(), 0, isFoto, StatusRegitro.ATIVO.getCodigo());
-			if (retornoLeituraSalvo != null) {
-				this.retornoLeituraRepository.setLogLancamentoLeitura(entity.getIdUsuarioAlteracao(), retornoLeituraSalvo.getId(), retornoLeituraSalvo.getId(), DescricaoLog.LANCAMENTO_LEITURA.getNome(), LocalDateTime.now(ZoneId.of("America/Sao_Paulo")));
-				if (entity.getListaFoto().size() > 0) {					
-					this.retornoFotoService.upload(entity.getListaFoto(), entity.getIdUsuarioAlteracao());
-				}
-			}
-			return retornoLeituraSalvo;
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-		}
-		return null;
-	}
 
 	public RetornoLeitura lancarLeitura(RetornoLeituraDto entity) {
 		try {
@@ -424,7 +401,13 @@ public class RetornoLeituraService implements IRetornoLeituraService {
 	}
 	
 	public RetornoLeituraClienteDto getRetornoLeituraCliente(RetornoLeituraFilter filter) {
-		RetornoLeituraClienteProjection projection = this.retornoLeituraRepository.getRetornoLeituraCliente(filter.getIdRegional(), filter.getDataReferencia(), filter.getInstalacao(), filter.getMedidor());
+		RetornoLeituraClienteProjection projection = null;
+		if (filter.getTipoLeitura().equalsIgnoreCase("R")) {
+			projection = this.retornoLeituraRepository.getRetornoLeituraClienteRepasse(filter.getIdRegional(), filter.getDataReferencia(), filter.getInstalacao(), filter.getMedidor());
+		} else {
+			projection = this.retornoLeituraRepository.getRetornoLeituraCliente(filter.getIdRegional(), filter.getDataReferencia(), filter.getInstalacao(), filter.getMedidor());
+		}
+		//RetornoLeituraClienteProjection projection = this.retornoLeituraRepository.getRetornoLeituraCliente(filter.getIdRegional(), filter.getDataReferencia(), filter.getInstalacao(), filter.getMedidor());
 		RetornoLeituraClienteDto dto = new RetornoLeituraClienteDto();
 		if (projection != null) {
 			dto.setIdLeitura(projection.getIdLeitura());

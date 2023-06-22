@@ -324,9 +324,41 @@ public interface RetornoLeituraRepository extends JpaRepository<RetornoLeitura, 
 		//	+ "	AND D.CD_GRUPO_FATURAMENTO = ?3 "
 			+ "	AND A.NR_INSTALACAO LIKE CASE WHEN ?3 != '0' THEN CONCAT('%', ?3) ELSE '%' END "
 			+ "	AND A.NR_MEDIDOR LIKE CASE WHEN ?4 != '0' THEN CONCAT('%', ?4) ELSE '%' END "
-			+ "	AND C.FL_ATIVO = 1", nativeQuery = true)
+			+ "	AND C.FL_ATIVO = 1"
+			+ "	AND A.FL_LEITURA_REPASSE != 'R' ", nativeQuery = true)
 	public RetornoLeituraClienteProjection getRetornoLeituraCliente(Long idRegional, LocalDate dataReferencia, String instalacao, String medidor);
 	
+	@Transactional
+	@Query(value = "SELECT TOP 1 "
+			+ "	A.ID_LEITURA			AS IDLEITURA "
+			+ "	,A.NR_INSTALACAO		AS INSTALACAO "
+			+ "	,A.NR_MEDIDOR			AS MEDIDOR "
+			+ "	,C.NR_LEITURA_MEDIDA	AS LEITURAMEDIDA "
+			+ "	,C.DT_LEITURA			AS DATALEITURA "
+			+ "	,A.CD_SEGUIMENTO		AS SEGMENTO "
+			+ "	,A.CD_RAMO_ATIVIDADE	AS RAMOATIVIDADE " 
+			+ "	,A.NM_ENDERECO			AS ENDERECO "
+			+ "	,A.NM_COMPLEMENTO		AS COMPLEMENTO "
+			+ "	,A.NM_MUNICIPIO			AS MUNICIPIO "
+			+ "	,C.FL_FOTO				AS ISFOTO "
+			+ "	,C.CD_LATITUDE			AS LATITUDE "
+			+ "	,C.CD_LONGITUDE			AS LONGITUDE "
+			+ "FROM "
+			+ "	MED_LEITURA								AS A "
+			+ "	INNER JOIN MED_IMPORTACAO				AS B ON B.ID_IMPORTACAO = A.ID_IMPORTACAO "
+			+ "	INNER JOIN MED_RETORNO_LEITURA			AS C ON C.ID_LEITURA = A.ID_LEITURA "
+			+ "	INNER JOIN MED_GRUPO_FATURAMENTO		AS D ON D.ID_GRUPO_FATURAMENTO = C.ID_GRUPO_FATURAMENTO "
+			+ "WHERE "
+			+ "	B.ID_REGIONAL = ?1 "
+			+ "	AND B.DT_ANO_MES_REF = ?2 "
+		//	+ "	AND D.CD_GRUPO_FATURAMENTO = ?3 "
+			+ "	AND A.NR_INSTALACAO LIKE CASE WHEN ?3 != '0' THEN CONCAT('%', ?3) ELSE '%' END "
+			+ "	AND A.NR_MEDIDOR LIKE CASE WHEN ?4 != '0' THEN CONCAT('%', ?4) ELSE '%' END "
+			+ "	AND C.FL_ATIVO = 1"
+			+ "	AND A.FL_LEITURA_REPASSE = 'R' ", nativeQuery = true)
+	public RetornoLeituraClienteProjection getRetornoLeituraClienteRepasse(Long idRegional, LocalDate dataReferencia, String instalacao, String medidor);
+	
+	//NAO ESTA SENDO USADO
 	@Modifying
 	@Transactional
 	@Query(value = "IINSERT INTO MED_RETORNO_LEITURA ("
