@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
+//import java.util.concurrent.TimeUnit;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -145,10 +145,10 @@ public class RetornoLeituraService implements IRetornoLeituraService {
 
 	public RetornoLeitura lancarLeitura(RetornoLeituraDto entity) {
 		try {
-			TimeUnit.SECONDS.sleep(1);
-			if (this.isExiste(entity.getIdLeitura()) > 0) {
-				return null;
-			}
+			//TimeUnit.SECONDS.sleep(1);
+		//	if (this.isExiste(entity.getIdLeitura()) > 0) {
+		//		return null;
+		//	}
 			Ocorrencia ocorrencia = this.ocorrenciaService.findByCodigo(entity.getOcorrencia()).get();
 			if ((ocorrencia.getTipoOcorrencia() == OcorrenciaTipo.IMPEDIMENTO.getCodigo() && entity.getLeitura() > 0) || (ocorrencia.getTipoOcorrencia() == OcorrenciaTipo.IMPEDIMENTO.getCodigo() && entity.getQtdFoto() == 0)) {
 				return null;
@@ -200,10 +200,10 @@ public class RetornoLeituraService implements IRetornoLeituraService {
 	
 	public RetornoLeitura lancarRepasse(RetornoLeituraDto entity) {
 		try {
-			TimeUnit.SECONDS.sleep(1);
-			if (this.isExiste(entity.getIdLeituraRepasse()) > 0) {
-				return null;
-			}
+			//TimeUnit.SECONDS.sleep(1);
+		//	if (this.isExiste(entity.getIdLeituraRepasse()) > 0) {
+		//		return null;
+		//	}
 			Ocorrencia ocorrencia = this.ocorrenciaService.findByCodigo(entity.getOcorrencia()).get();
 			if ((ocorrencia.getTipoOcorrencia() == OcorrenciaTipo.IMPEDIMENTO.getCodigo() && entity.getLeitura() > 0) || (ocorrencia.getTipoOcorrencia() == OcorrenciaTipo.IMPEDIMENTO.getCodigo() && entity.getQtdFoto() == 0)) {
 				return null;
