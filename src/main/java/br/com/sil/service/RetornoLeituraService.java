@@ -264,6 +264,7 @@ public class RetornoLeituraService implements IRetornoLeituraService {
 			retornoLeitura.setFlagMedia(r.getFlagMedia());
 			retornoLeitura.setIsFoto(entity.getQtdFoto() > 0 ? RetornoLeituraInfo.COM_FOTO.getCodigo() : RetornoLeituraInfo.SEM_FOTO.getCodigo());
 			retornoLeitura.setAtivo(StatusRegitro.ATIVO.getCodigo());
+			retornoLeitura.setVersaoApp(r.getVersaoApp());
 			RetornoLeitura retornoLeituraSalvo = this.retornoLeituraRepository.save(retornoLeitura);
 			RetornoLeitura retornoLeituraLog = null;
 			if (retornoLeituraSalvo != null) {
@@ -310,6 +311,7 @@ public class RetornoLeituraService implements IRetornoLeituraService {
 			retornoLeitura.setFlagMedia(r.getFlagMedia());
 			retornoLeitura.setIsFoto(r.getIsFoto());
 			retornoLeitura.setAtivo(StatusRegitro.ATIVO.getCodigo());
+			retornoLeitura.setVersaoApp(r.getVersaoApp());
 			RetornoLeitura retornoLeituraSalvo = this.retornoLeituraRepository.save(retornoLeitura);
 			RetornoLeitura retornoLeituraLog = null;
 			if (retornoLeituraSalvo != null) {
