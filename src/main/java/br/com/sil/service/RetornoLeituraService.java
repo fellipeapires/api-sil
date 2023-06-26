@@ -355,8 +355,7 @@ public class RetornoLeituraService implements IRetornoLeituraService {
 	}
 
 	public AcompanhamentoTotalProjection getAcompanhamentoTotal(RetornoLeituraFilter filter) {
-		return this.retornoLeituraRepository.getAcompanhamentoTotal(filter.getIdRegional(), filter.getDataReferencia(),
-				filter.getGrupoFaturamento());
+		return this.retornoLeituraRepository.getAcompanhamentoTotal(filter.getIdRegional(), filter.getDataReferencia(), filter.getGrupoFaturamento());
 	}
 
 	public List<AcompanhamentoDetailProjection> getAcompanhamentoDetail(RetornoLeituraFilter filter) {
