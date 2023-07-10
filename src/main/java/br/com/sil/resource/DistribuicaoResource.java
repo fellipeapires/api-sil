@@ -124,7 +124,7 @@ public class DistribuicaoResource implements IDistribuicaoResource {
 		return new ResponseEntity<List<Long>>(lista, HttpStatus.OK);
 	}
 	
-	@GetMapping("/downloadleituramobilev421/{idUsuario}")
+	@GetMapping("/downloadleituramobilev423/{idUsuario}")
 	public ResponseEntity<?> getCargaMobile(@PathVariable("idUsuario") long idUsuario) {
 		List<CargaMobileProjection> lista = this.distribuicaoService.getCargaMobile(idUsuario);
 		return new ResponseEntity<List<CargaMobileProjection>>(lista, HttpStatus.OK);
