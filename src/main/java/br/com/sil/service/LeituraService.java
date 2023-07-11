@@ -3,12 +3,14 @@ package br.com.sil.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import br.com.sil.model.Leitura;
 import br.com.sil.repository.LeituraRepository;
 import br.com.sil.repository.filter.LeituraFilter;
-import br.com.sil.repository.projection.LeituraProjection;
+ import br.com.sil.repository.projection.LeituraProjection;
 import br.com.sil.repository.projection.LeituraRepasseProjection;
 import br.com.sil.service.interfaces.ILeituraService;
 
@@ -36,10 +38,14 @@ public class LeituraService implements ILeituraService {
 	public Leitura buscarPorId(long id) {
 		return this.leituraRepository.findById(id).get();
 	}
+	
+	public Page<Leitura> pesquisar(LeituraFilter filter, Pageable pageable) {
+		return this.leituraRepository.pesquisar(filter, pageable);
+	}
 
 	@Override
 	public List<Leitura> pesquisar(LeituraFilter filter) {
-		return this.leituraRepository.pesquisar(filter);
+		return null;
 	}
 	
 	public List<LeituraProjection> getLeituraPendente(LeituraFilter filter) {

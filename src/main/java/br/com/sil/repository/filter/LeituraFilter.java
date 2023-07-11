@@ -22,6 +22,9 @@ public class LeituraFilter {
 	private String instalacao;
 	private String medidor;
 	private Boolean isFoto;
+	private String endereco;
+	private String complemento;
+	private String cep;
 	
 	@JsonFormat(pattern = "yyyy-MM-dd", shape = JsonFormat.Shape.STRING)
 	@DateTimeFormat(pattern = "yyyy-MM-dd")

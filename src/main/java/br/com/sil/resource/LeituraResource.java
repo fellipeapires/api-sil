@@ -3,6 +3,8 @@ package br.com.sil.resource;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,7 +13,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.sil.model.Leitura;
+import br.com.sil.model.RetornoLeitura;
 import br.com.sil.repository.filter.LeituraFilter;
+import br.com.sil.repository.filter.RetornoLeituraFilter;
 import br.com.sil.repository.projection.LeituraProjection;
 import br.com.sil.repository.projection.LeituraRepasseProjection;
 import br.com.sil.resource.interfaces.ILeituraResource;
@@ -42,6 +46,12 @@ public class LeituraResource implements ILeituraResource {
 		return null;
 	}
 
+	@GetMapping("/pesquisar")
+	public ResponseEntity<?> pesquisar(LeituraFilter filter, Pageable pageable) {
+		Page<Leitura> lista = this.leituraService.pesquisar(filter, pageable);
+		return new ResponseEntity<Page<Leitura>>(lista, HttpStatus.OK);
+	}
+	
 	@Override
 	public ResponseEntity<?> pesquisar(LeituraFilter filter) {
 		// TODO Auto-generated method stub
