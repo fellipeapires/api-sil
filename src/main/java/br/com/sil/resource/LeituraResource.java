@@ -8,14 +8,14 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.sil.model.Leitura;
-import br.com.sil.model.RetornoLeitura;
+import br.com.sil.model.dto.LeituraDto;
 import br.com.sil.repository.filter.LeituraFilter;
-import br.com.sil.repository.filter.RetornoLeituraFilter;
 import br.com.sil.repository.projection.LeituraProjection;
 import br.com.sil.repository.projection.LeituraRepasseProjection;
 import br.com.sil.resource.interfaces.ILeituraResource;
@@ -74,6 +74,12 @@ public class LeituraResource implements ILeituraResource {
 	public ResponseEntity<?> getLeituraRepasse(LeituraFilter filter) {
 		List<LeituraRepasseProjection> lista = this.leituraService.getLeituraRepasse(filter);
 		return new ResponseEntity<List<LeituraRepasseProjection>>(lista, HttpStatus.OK);
+	}
+	
+	@PutMapping("/alterartarefa")
+	public ResponseEntity<?> alterarTarefa(@RequestBody LeituraDto entity) {
+		int qtdAlterado = this.leituraService.alterarTarefa(entity);
+		return new ResponseEntity<Integer>(qtdAlterado, HttpStatus.OK);
 	}
 
 }

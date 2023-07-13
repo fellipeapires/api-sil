@@ -33,6 +33,9 @@ public class LeituraRepositoryImpl implements LeituraRepositoryQuery {
 
 		Predicate[] predicates = criarRestricoes(filter, builder, root);
 		criteria.where(predicates);
+		
+		//criteria.orderBy(builder.asc(root.get(Leitura_.endereco)));
+		criteria.orderBy(builder.asc(root.get(Leitura_.tarefaLeitura)));
 
 		TypedQuery<Leitura> query = manager.createQuery(criteria);
 		adicionarRestricoesDePaginacao(query, pageable);
@@ -66,10 +69,7 @@ public class LeituraRepositoryImpl implements LeituraRepositoryQuery {
 			predicates.add(builder.like(builder.upper(root.get(Leitura_.medidor)), "%" + filter.getMedidor()));
 		}
 		if (filter.getEndereco() != null) {
-			predicates.add(builder.like(builder.upper(root.get(Leitura_.endereco)), filter.getEndereco() + "%"));
-		}
-		if (filter.getComplemento() != null) {
-			predicates.add(builder.like(builder.upper(root.get(Leitura_.complemento)), filter.getComplemento() + "%"));
+			predicates.add(builder.like(builder.upper(root.get(Leitura_.endereco)), filter.getEndereco().trim() + "%"));
 		}
 		if (filter.getCep() != null) {
 			predicates.add(builder.like(builder.upper(root.get(Leitura_.cep)), filter.getCep() + "%"));

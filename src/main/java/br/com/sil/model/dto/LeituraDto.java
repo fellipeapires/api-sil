@@ -1,4 +1,4 @@
-package br.com.sil.repository.filter;
+package br.com.sil.model.dto;
 
 import java.time.LocalDate;
 
@@ -13,17 +13,13 @@ import lombok.ToString;
 @ToString
 @Getter
 @Setter
-public class LeituraFilter {
+public class LeituraDto {
 	private Long id;
-	private Long idImportacao;
 	private Long idRegional;
 	private Integer grupoFaturamento;
-	private String tarefa;
-	private String instalacao;
-	private String medidor;
-	private Boolean isFoto;
-	private String endereco;
-	private String cep;
+	private String tarefaLeitura;
+	private String tarefaEntrega;
+	
 	
 	@JsonFormat(pattern = "yyyy-MM-dd", shape = JsonFormat.Shape.STRING)
 	@DateTimeFormat(pattern = "yyyy-MM-dd")

@@ -6,6 +6,7 @@ import java.util.List;
 import javax.transaction.Transactional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
 import br.com.sil.model.Leitura;
@@ -96,5 +97,25 @@ public interface LeituraRepository extends JpaRepository<Leitura, Long>, Leitura
 			+ "ORDER BY A.CD_TAREFA_LEITURA, A.NM_ENDERECO ASC", nativeQuery = true)
 	public List<LeituraRepasseProjection> getLeituraRepasseComFoto(Long idRegional, LocalDate dataReferencia, int grupoFaturamento, String instalacao, String medidor);
 	
+	@Modifying
+	@Transactional
+	@Query(value = "UPDATE MED_LEITURA SET CD_TAREFA_LEITURA = ?5, CD_TAREFA_ENTREGA = ?6 "
+			+ "WHERE ID_LEITURA = ?4 AND ID_LEITURA NOT IN (SELECT ID_LEITURA FROM MED_DISTRIBUICAO_LEITURA_REGISTRO WHERE ID_REGIONAL = ?1 AND DT_ANO_MES_REF = ?2 AND CD_GRUPO_FATURAMENTO = ?3 AND ID_LEITURA = ?4) SELECT @@ROWCOUNT", nativeQuery = true)
+	public int alterarTarefa(Long idRegional, LocalDate dataReferencia, int grupoFaturamento, Long idLeitura, String tarefaLeitura, String tarefaEntrega);
+	
+	/*
+	 @Modifying
+	@Transactional
+	@Query(value="UPDATE MED_DISTRIBUICAO_LEITURA_REGISTRO SET FL_ASSOCIADO = ?6 "
+			+ "FROM MED_LEITURA AS A "
+			+ "INNER JOIN MED_IMPORTACAO AS B ON A.ID_IMPORTACAO = B.ID_IMPORTACAO "
+			+ "INNER JOIN MED_GRUPO_FATURAMENTO AS D ON D.ID_GRUPO_FATURAMENTO = B.ID_GRUPO_FATURAMENTO "
+			+ "INNER JOIN MED_DISTRIBUICAO_LEITURA_REGISTRO AS C ON C.ID_LEITURA = A.ID_LEITURA "
+			+ "INNER JOIN SEG_USUARIO AS E ON E.ID_USUARIO = C.ID_USUARIO "
+			+ "WHERE B.DT_ANO_MES_REF = ?1 AND B.ID_REGIONAL = ?2 AND D.CD_GRUPO_FATURAMENTO = ?3  AND C.FL_ASSOCIADO = ?7 "
+			+ "AND A.CD_TAREFA_LEITURA = ISNULL((CASE WHEN ?4 = '0' THEN NULL ELSE ?4 END), A.CD_TAREFA_LEITURA) "
+			+ "AND C.ID_USUARIO = ISNULL((CASE WHEN ?5 = 0 THEN NULL ELSE ?5 END), C.ID_USUARIO)", nativeQuery = true)
+	public Integer liberarCarga(LocalDate dataReferencia, long idRegional, int grupoFaturamento, String tarefa, long idUsuario, int liberado, int naoLiberado);
+	 * */
 	
 }

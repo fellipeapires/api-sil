@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import br.com.sil.model.Leitura;
+import br.com.sil.model.dto.LeituraDto;
 import br.com.sil.repository.LeituraRepository;
 import br.com.sil.repository.filter.LeituraFilter;
  import br.com.sil.repository.projection.LeituraProjection;
@@ -62,6 +63,10 @@ public class LeituraService implements ILeituraService {
 		} else {
 			return this.leituraRepository.getLeituraRepasse(filter.getIdRegional(), filter.getDataReferencia(), filter.getGrupoFaturamento(), filter.getInstalacao(), filter.getMedidor());
 		}
+	}
+	
+	public int alterarTarefa(LeituraDto entity) {
+		return this.leituraRepository.alterarTarefa(entity.getIdRegional(), entity.getDataReferencia(), entity.getGrupoFaturamento(), entity.getId(), entity.getTarefaLeitura(), entity.getTarefaEntrega());
 	}
 
 }
