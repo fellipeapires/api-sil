@@ -40,6 +40,10 @@ public class LeituraService implements ILeituraService {
 		return this.leituraRepository.findById(id).get();
 	}
 	
+	public List<Leitura> listarLancamento(LeituraFilter filter) {
+		return this.leituraRepository.listarLancamento(filter.getIdRegional(), filter.getDataReferencia(), filter.getGrupoFaturamento(), filter.getTarefa());
+	}
+	
 	public Page<Leitura> pesquisar(LeituraFilter filter, Pageable pageable) {
 		return this.leituraRepository.pesquisar(filter, pageable);
 	}

@@ -45,6 +45,12 @@ public class LeituraResource implements ILeituraResource {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	@GetMapping("/listarlancamentoleitura")
+	public ResponseEntity<?> listarPorTarefa(LeituraFilter filter) {
+		List<Leitura> lista = this.leituraService.listarLancamento(filter);
+		return new ResponseEntity<List<Leitura>>(lista, HttpStatus.OK);
+	}
 
 	@GetMapping("/pesquisar")
 	public ResponseEntity<?> pesquisar(LeituraFilter filter, Pageable pageable) {

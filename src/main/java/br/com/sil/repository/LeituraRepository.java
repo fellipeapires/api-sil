@@ -118,4 +118,21 @@ public interface LeituraRepository extends JpaRepository<Leitura, Long>, Leitura
 	public Integer liberarCarga(LocalDate dataReferencia, long idRegional, int grupoFaturamento, String tarefa, long idUsuario, int liberado, int naoLiberado);
 	 * */
 	
+	@Transactional
+	@Query(value = "SELECT A.* "
+			+ "FROM MED_LEITURA AS A "
+			+ "	INNER JOIN MED_IMPORTACAO AS B ON B.ID_IMPORTACAO  = A.ID_IMPORTACAO "
+			+ "	INNER JOIN MED_GRUPO_FATURAMENTO AS C ON C.ID_GRUPO_FATURAMENTO = B.ID_GRUPO_FATURAMENTO "
+			+ "	LEFT OUTER JOIN MED_DISTRIBUICAO_LEITURA_REGISTRO AS D ON D.ID_LEITURA = A.ID_LEITURA AND D.ID_REGIONAL = ?1 AND D.DT_ANO_MES_REF = ?2 AND D.CD_GRUPO_FATURAMENTO = ?3 "
+			+ "	LEFT OUTER JOIN MED_RETORNO_LEITURA AS E ON E.ID_LEITURA = A.ID_LEITURA AND E.ID_REGIONAL = ?1 AND E.FL_ATIVO = 1 "
+			+ "WHERE "
+			+ "	B.ID_REGIONAL = ?1 "
+			+ "	AND B.DT_ANO_MES_REF = ?2 "
+			+ "	AND C.CD_GRUPO_FATURAMENTO = ?3 "
+			+ "	AND A.CD_TAREFA_LEITURA = ?4 "
+			+ "	AND D.ID_LEITURA IS NULL "
+			+ "	AND E.ID_LEITURA IS NULL", nativeQuery = true)
+	public List<Leitura> listarLancamento(Long idRegional, LocalDate dataReferencia, int grupoFaturamento, String tarefaLeitura);
+	
+	
 }
