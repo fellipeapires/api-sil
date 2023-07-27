@@ -361,7 +361,7 @@ public interface RetornoLeituraRepository extends JpaRepository<RetornoLeitura, 
 	//NAO ESTA SENDO USADO
 	@Modifying
 	@Transactional
-	@Query(value = "IINSERT INTO MED_RETORNO_LEITURA ("
+	@Query(value = "INSERT INTO MED_RETORNO_LEITURA ("
 			+ "	 ID_LEITURA "
 			+ "	,ID_REGIONAL "
 			+ "	,ID_USUARIO "
@@ -413,5 +413,10 @@ public interface RetornoLeituraRepository extends JpaRepository<RetornoLeitura, 
 			+ "LEFT OUTER JOIN MED_RETORNO_LEITURA AS C ON C.ID_LEITURA = A.ID_LEITURA "
 			+ "WHERE A.ID_LEITURA = ?1 AND C.ID_LEITURA IS NULL ", nativeQuery = true)
 	public RetornoLeitura lancarLeitura(Long idLeitura, Long idUsuario, Long idOcorrencia, Integer leituraMedida, Double variacao, LocalDateTime dataLeitura, String latitude, String longitude, Integer critica, String observacao, Integer media, Integer isFoto, Integer ativo);
+	
+	@Modifying
+	@Transactional
+	@Query(value = "UPDATE MED_RETORNO_LEITURA SET FL_EXPORTADO = 1 WHERE ID_RETORNO_LEITURA IN(?1) AND FL_EXPORTADO = 0;", nativeQuery = true)
+	public void marcarExportado(List<Long> listaIdRetornoLeitura);
 	
 }

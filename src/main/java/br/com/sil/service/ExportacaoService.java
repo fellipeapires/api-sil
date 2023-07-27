@@ -7,6 +7,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -20,6 +21,7 @@ import br.com.sil.model.Regional;
 import br.com.sil.model.Usuario;
 import br.com.sil.repository.ExportacaoRepository;
 import br.com.sil.repository.filter.ExportacaoFilter;
+import br.com.sil.repository.projection.ExportacaoProjection;
 import br.com.sil.repository.projection.RetornoLeituraExportacaoProjection;
 import br.com.sil.service.interfaces.IExportacaoService;
 
@@ -61,20 +63,28 @@ public class ExportacaoService implements IExportacaoService {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
+	
+	public List<ExportacaoProjection> listar(ExportacaoFilter filter) {
+		return this.exportacaoRepository.listar(filter.getIdRegional(), filter.getDataReferencia(), filter.getGrupoFaturamento());
+	}
+	
 	@Override
 	public List<Exportacao> pesquisar(ExportacaoFilter filter) {
 		return this.exportacaoRepository.pesquisar(filter);
 	}
 	
 	public Exportacao exportar(ExportacaoFilter filter) throws Exception {
-		int qtdExportado = 0;
+		int qtdExportacao = 0;
 		LocalDateTime dataExportacao = LocalDateTime.now(ZoneId.of("America/Sao_Paulo"));
 		System.out.println("Data Inicio Exportacao: " + dataExportacao);
 		
 		GrupoFaturamento grupoFaturamento = this.grupoFaturamentoService.findByCodigo(filter.getGrupoFaturamento()).get();
 		Usuario usuario = this.usuarioService.buscarPorId(filter.getIdUsuario());
 		Regional regional = this.regionalService.buscarPorId(filter.getIdRegional());
+		List<Long> listaIdRetornoLeitura = new ArrayList<>();
+		int qtdImportado = this.exportacaoRepository.getQtdImportado(filter.getIdRegional(), filter.getDataReferencia(), filter.getGrupoFaturamento());
+		int qtdExportado = this.exportacaoRepository.getQtdExportado(filter.getIdRegional(), filter.getDataReferencia(), filter.getGrupoFaturamento());
+		int qtdNaoExportado = this.exportacaoRepository.getQtdNaoExportado(filter.getIdRegional(), filter.getDataReferencia(), filter.getGrupoFaturamento());
 		
 		String cabecarioArquivo = this.exportacaoRepository.getCabecarioArquivo(filter.getIdRegional(), filter.getDataReferencia(), filter.getGrupoFaturamento(), filter.getTipoLeitura());
 		
@@ -121,12 +131,15 @@ public class ExportacaoService implements IExportacaoService {
 			exportacao.setDataReferencia(filter.getDataReferencia());
 			exportacao.setObservacao("");
 			exportacao.setPath(this.apiProperty.getPathExportacao() + nomeArquivo);
+			exportacao.setQtdImportado(qtdImportado);
+			exportacao.setQtdExportado(qtdExportado);
+			exportacao.setQtdNaoExportado(qtdNaoExportado);
 			Exportacao exportacaoSalva = this.exportacaoRepository.save(exportacao);
 			
 			gravar.printf(cabecarioArquivo + "\r\n");
 			try {
 				for (RetornoLeituraExportacaoProjection retorno : listaRetorno) {
-					qtdExportado++;
+					qtdExportacao++;
 					DateTimeFormatter formatter = DateTimeFormatter.ofPattern("ddMMyyyy");
 					//DateTimeFormatter formatterHora = DateTimeFormatter.ofPattern("HH:mm");
 					String data = retorno.getDataLeitura().format(formatter);
@@ -171,10 +184,11 @@ public class ExportacaoService implements IExportacaoService {
 						gravar.printf(retorno.getLatitude() + "," + retorno.getLongitude());// 17 digitos;
 					}
 					gravar.printf(retorno.getObservacao() + "\r\n");
+					listaIdRetornoLeitura.add(retorno.getIdRetornoLeitura());
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
-				exportacaoSalva.setObservacao("ERRO: " + exportacao.getId() + "Linha.: " + qtdExportado + " - " + e.getMessage());
+				exportacaoSalva.setObservacao("ERRO: " + exportacao.getId() + "Linha.: " + qtdExportacao + " - " + e.getMessage());
 				this.exportacaoRepository.save(exportacaoSalva);
 				System.out.println("Causa: " + e.getCause());
 				System.out.println("Mensagem Localizada " + e.getLocalizedMessage());
@@ -183,10 +197,11 @@ public class ExportacaoService implements IExportacaoService {
 				try {
 					arquivoExportacao.close();
 					dataExportacao = LocalDateTime.now(ZoneId.of("America/Sao_Paulo"));
-					System.out.println("Data Fim Exportacao: " + dataExportacao + " - qtd: " + qtdExportado);
+					System.out.println("Data Fim Exportacao: " + dataExportacao + " - qtd: " + qtdExportacao);
 					exportacaoSalva.setObservacao("Exportado com sucesso!");
-					exportacaoSalva.setQtdExportacao(qtdExportado);
+					exportacaoSalva.setQtdExportacao(qtdExportacao);
 					this.exportacaoRepository.save(exportacaoSalva);
+					this.retornoLeituraService.marcarExportado(listaIdRetornoLeitura);
 					return exportacaoSalva;
 				} catch (IOException e) {
 					System.out.println("Error while flushing/closing fileWriter !!!");
@@ -195,7 +210,7 @@ public class ExportacaoService implements IExportacaoService {
 			}
 		}
 		dataExportacao = LocalDateTime.now(ZoneId.of("America/Sao_Paulo"));
-		System.out.println("Data Fim Exportacao: " + dataExportacao + " - qtd: " + qtdExportado);
+		System.out.println("Data Fim Exportacao: " + dataExportacao + " - qtd: " + qtdExportacao);
 		return null;
 	}
 	

@@ -99,10 +99,10 @@
 		</dependency>
 		
 		<!-- hikaricp -->
-		<dependency>
+		<!--<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-hikaricp</artifactId>
-		</dependency>
+		</dependency>-->
 		
 		<!-- jpamodelgen -->
 		<dependency>

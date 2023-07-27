@@ -7,7 +7,8 @@ public enum RetornoLeituraInfo {
 	SEM_FOTO("semFoto", 0),
 	COM_FOTO("comFoto", 1),
 	NAO_ANALIZADO("naoAnalizado", 0),
-	ANALIZADO("analizado", 1);
+	ANALIZADO("analizado", 1),
+	NAO_EXPORTADO("naoExportado", 0);
 	
 	private final String nome;
 	private final int codigo;

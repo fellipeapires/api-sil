@@ -134,5 +134,7 @@ public class RetornoLeitura implements Serializable {
 	@Column(name = "VERSAO_APP")
 	private String versaoApp;
 	
-
+	@Column(name = "FL_EXPORTADO")
+	private Integer isExportado;
+	
 }

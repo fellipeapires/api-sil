@@ -73,5 +73,14 @@ public class Exportacao implements Serializable {
 		@NotNull
 		@Column(name = "DS_PATH")
 		private String path;
+		
+		@Column(name = "QTD_IMPORTADO")
+		private Integer qtdImportado;
+		
+		@Column(name = "QTD_EXPORTADO")
+		private Integer qtdExportado;
+		
+		@Column(name = "QTD_NAO_EXPORTADO")
+		private Integer qtdNaoExportado;
 
 }

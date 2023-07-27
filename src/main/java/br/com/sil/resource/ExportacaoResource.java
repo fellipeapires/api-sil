@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.sil.config.ApiProperty;
 import br.com.sil.model.Exportacao;
 import br.com.sil.repository.filter.ExportacaoFilter;
+import br.com.sil.repository.projection.ExportacaoProjection;
 import br.com.sil.resource.interfaces.IExportacaoResource;
 import br.com.sil.service.ExportacaoService;
 
@@ -48,6 +49,12 @@ public class ExportacaoResource implements IExportacaoResource {
 	public ResponseEntity<?> buscarPorId(long id) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	
+	@GetMapping("/listar")
+	public ResponseEntity<?> listar(ExportacaoFilter filter) {
+		List<ExportacaoProjection> lista = this.exportacaoService.listar(filter);
+		return new ResponseEntity<List<ExportacaoProjection>>(lista, HttpStatus.OK);
 	}
 
 	@Override
