@@ -67,7 +67,35 @@ public int getQtdExportado(Long idRegional, LocalDate dataReferencia, int grupoF
 		+ "			AND D.FL_EXPORTADO = 0 AND D.FL_ATIVO = 1", nativeQuery = true)
 public int getQtdNaoExportado(Long idRegional, LocalDate dataReferencia, int grupoFaturamento);
 
+@Transactional
+@Query(value="SELECT "
+		+ "	 MAX(C.NM_NOME)								AS REGIONAL "
+		+ "	,MAX(B.DT_ANO_MES_REF)						AS DATAREFERENCIA "
+		+ "	,MAX(D.CD_GRUPO_FATURAMENTO)				AS GRUPOFATURAMENTO "
+		+ "	,MAX(B.NM_ARQUIVO)							AS ARQUIVO "
+		+ "	,MAX(B.DT_EXPORTACAO)						AS DATAEXPORTACAO# "
+		+ "	,MAX(B.DT_EXPORTACAO)						AS DATAEXPORTACAO "
+		+ "	,MAX(B.QT_REGISTRO)							AS QTDARQUIVO "
+		+ "	,MAX(B.QT_IMPORTADO)						AS QTDIMPORTADO "
+		+ "	,MAX(B.QT_EXPORTADO)						AS QTDEXPORTADO "
+		+ "	,MAX(B.QT_NAO_EXPORTADO)					AS QTDNAOEXPORTADO "
+		+ "	,MAX(B.DS_EXPORTACAO)						AS OBSERVACAO "
+		+ "FROM "
+		+ "	MED_EXPORTACAO AS B "
+		+ "	INNER JOIN CAD_REGIONAL AS C ON C.ID_REGIONAL = B.ID_REGIONAL "
+		+ "	INNER JOIN MED_GRUPO_FATURAMENTO AS D ON D.ID_GRUPO_FATURAMENTO = B.ID_GRUPO_FATURAMENTO "
+		+ "WHERE "
+		+ "	B.ID_REGIONAL = ?1 "
+		+ "	AND B.DT_ANO_MES_REF = ?2 "
+		+ "	AND D.CD_GRUPO_FATURAMENTO = ISNULL(?3, D.CD_GRUPO_FATURAMENTO) "
+		+ "GROUP BY "
+		+ "	D.CD_GRUPO_FATURAMENTO	"
+		+ "	,B.ID_GRUPO_FATURAMENTO "
+		+ "ORDER BY "
+		+ "	DATAEXPORTACAO# DESC", nativeQuery = true)
+public List<ExportacaoProjection> listar(Long idRegional, LocalDate dataReferencia, Integer grupoFaturamento);
 
+/*
 @Transactional
 @Query(value="SELECT "
 		+ "			MAX(C.NM_NOME)								AS REGIONAL "
@@ -127,6 +155,6 @@ public int getQtdNaoExportado(Long idRegional, LocalDate dataReferencia, int gru
 		+ "		ORDER BY "
 		+ "			DATAEXPORTACAO# DESC", nativeQuery = true)
 public List<ExportacaoProjection> listar(Long idRegional, LocalDate dataReferencia, Integer grupoFaturamento);
-
+*/
 
 }
