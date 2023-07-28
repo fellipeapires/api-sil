@@ -445,8 +445,12 @@ public class RetornoLeituraService implements IRetornoLeituraService {
 		}
 	}
 	
-	public void marcarExportado(List<Long> listaIdRetornoLeitura) {
-		this.retornoLeituraRepository.marcarExportado(listaIdRetornoLeitura);
+	public void marcarExportadoLista(List<Long> listaIdRetornoLeitura) {
+		this.retornoLeituraRepository.marcarExportadoLista(listaIdRetornoLeitura);
+	}
+	
+	public void marcarExportado(Long idRetornoLeitura) {
+		this.retornoLeituraRepository.marcarExportado(idRetornoLeitura);
 	}
 
 }

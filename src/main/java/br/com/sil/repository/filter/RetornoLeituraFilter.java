@@ -35,6 +35,7 @@ public class RetornoLeituraFilter {
 	private Integer isFoto;
 	private Integer flagCritica;
 	private String tipoLeitura;
+	private Integer isExportado;
 	
 	@JsonFormat(pattern = "yyyy-MM-dd", shape = JsonFormat.Shape.STRING)
 	@DateTimeFormat(pattern = "yyyy-MM-dd")

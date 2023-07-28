@@ -417,6 +417,11 @@ public interface RetornoLeituraRepository extends JpaRepository<RetornoLeitura, 
 	@Modifying
 	@Transactional
 	@Query(value = "UPDATE MED_RETORNO_LEITURA SET FL_EXPORTADO = 1 WHERE ID_RETORNO_LEITURA IN(?1) AND FL_EXPORTADO = 0;", nativeQuery = true)
-	public void marcarExportado(List<Long> listaIdRetornoLeitura);
+	public void marcarExportadoLista(List<Long> listaIdRetornoLeitura);
+	
+	@Modifying
+	@Transactional
+	@Query(value = "UPDATE MED_RETORNO_LEITURA SET FL_EXPORTADO = 1 WHERE ID_RETORNO_LEITURA = ?1 AND FL_EXPORTADO = 0;", nativeQuery = true)
+	public void marcarExportado(Long idRetornoLeitura);
 	
 }

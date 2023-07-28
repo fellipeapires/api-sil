@@ -103,6 +103,9 @@ public class RetornoLeituraRepositoryImpl implements RetornoLeituraRepositoryQue
 		if (filter.getFlagCritica() != null) {
 			predicates.add(builder.equal(root.get(RetornoLeitura_.flagCritica), filter.getFlagCritica()));
 		}
+		if (filter.getIsExportado() != null) {
+			predicates.add(builder.equal(root.get(RetornoLeitura_.isExportado), filter.getIsExportado()));
+		}
 		predicates.add(builder.equal(root.get(RetornoLeitura_.ativo), filter.getAtivo()));
 		return predicates.toArray(new Predicate[predicates.size()]);
 	}

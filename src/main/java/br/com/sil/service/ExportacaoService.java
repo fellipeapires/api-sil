@@ -82,9 +82,6 @@ public class ExportacaoService implements IExportacaoService {
 		Usuario usuario = this.usuarioService.buscarPorId(filter.getIdUsuario());
 		Regional regional = this.regionalService.buscarPorId(filter.getIdRegional());
 		List<Long> listaIdRetornoLeitura = new ArrayList<>();
-		int qtdImportado = this.exportacaoRepository.getQtdImportado(filter.getIdRegional(), filter.getDataReferencia(), filter.getGrupoFaturamento());
-		int qtdExportado = this.exportacaoRepository.getQtdExportado(filter.getIdRegional(), filter.getDataReferencia(), filter.getGrupoFaturamento());
-		int qtdNaoExportado = this.exportacaoRepository.getQtdNaoExportado(filter.getIdRegional(), filter.getDataReferencia(), filter.getGrupoFaturamento());
 		
 		String cabecarioArquivo = this.exportacaoRepository.getCabecarioArquivo(filter.getIdRegional(), filter.getDataReferencia(), filter.getGrupoFaturamento(), filter.getTipoLeitura());
 		
@@ -131,9 +128,9 @@ public class ExportacaoService implements IExportacaoService {
 			exportacao.setDataReferencia(filter.getDataReferencia());
 			exportacao.setObservacao("");
 			exportacao.setPath(this.apiProperty.getPathExportacao() + nomeArquivo);
-			exportacao.setQtdImportado(qtdImportado);
-			exportacao.setQtdExportado(qtdExportado);
-			exportacao.setQtdNaoExportado(qtdNaoExportado);
+			//exportacao.setQtdImportado(qtdImportado);
+			//exportacao.setQtdExportado(qtdExportado);
+			//exportacao.setQtdNaoExportado(qtdNaoExportado);
 			Exportacao exportacaoSalva = this.exportacaoRepository.save(exportacao);
 			
 			gravar.printf(cabecarioArquivo + "\r\n");
@@ -185,6 +182,7 @@ public class ExportacaoService implements IExportacaoService {
 					}
 					gravar.printf(retorno.getObservacao() + "\r\n");
 					listaIdRetornoLeitura.add(retorno.getIdRetornoLeitura());
+					this.retornoLeituraService.marcarExportado(retorno.getIdRetornoLeitura());
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -198,10 +196,16 @@ public class ExportacaoService implements IExportacaoService {
 					arquivoExportacao.close();
 					dataExportacao = LocalDateTime.now(ZoneId.of("America/Sao_Paulo"));
 					System.out.println("Data Fim Exportacao: " + dataExportacao + " - qtd: " + qtdExportacao);
+					int qtdImportado = this.exportacaoRepository.getQtdImportado(filter.getIdRegional(), filter.getDataReferencia(), filter.getGrupoFaturamento());
+					int qtdExportado = this.exportacaoRepository.getQtdExportado(filter.getIdRegional(), filter.getDataReferencia(), filter.getGrupoFaturamento());
+					//int qtdNaoExportado = this.exportacaoRepository.getQtdNaoExportado(filter.getIdRegional(), filter.getDataReferencia(), filter.getGrupoFaturamento());
 					exportacaoSalva.setObservacao("Exportado com sucesso!");
 					exportacaoSalva.setQtdExportacao(qtdExportacao);
+					exportacaoSalva.setQtdImportado(qtdImportado);
+					exportacaoSalva.setQtdExportado(qtdExportado);
+					//exportacaoSalva.setQtdNaoExportado(qtdNaoExportado);
 					this.exportacaoRepository.save(exportacaoSalva);
-					this.retornoLeituraService.marcarExportado(listaIdRetornoLeitura);
+					//this.retornoLeituraService.marcarExportado(listaIdRetornoLeitura);
 					return exportacaoSalva;
 				} catch (IOException e) {
 					System.out.println("Error while flushing/closing fileWriter !!!");
