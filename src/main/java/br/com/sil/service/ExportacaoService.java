@@ -181,8 +181,8 @@ public class ExportacaoService implements IExportacaoService {
 						gravar.printf(retorno.getLatitude() + "," + retorno.getLongitude());// 17 digitos;
 					}
 					gravar.printf(retorno.getObservacao() + "\r\n");
-					listaIdRetornoLeitura.add(retorno.getIdRetornoLeitura());
 					this.retornoLeituraService.marcarExportado(retorno.getIdRetornoLeitura());
+					listaIdRetornoLeitura.add(retorno.getIdRetornoLeitura());
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
