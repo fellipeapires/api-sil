@@ -316,6 +316,7 @@ public class RetornoLeituraService implements IRetornoLeituraService {
 			retornoLeitura.setIsFoto(r.getIsFoto());
 			retornoLeitura.setAtivo(StatusRegitro.ATIVO.getCodigo());
 			retornoLeitura.setVersaoApp(r.getVersaoApp());
+			retornoLeitura.setIsExportado(r.getIsExportado());
 			RetornoLeitura retornoLeituraSalvo = this.retornoLeituraRepository.save(retornoLeitura);
 			RetornoLeitura retornoLeituraLog = null;
 			if (retornoLeituraSalvo != null) {

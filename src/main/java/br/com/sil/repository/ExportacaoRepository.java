@@ -34,8 +34,12 @@ public String getCabecarioArquivo(Long idRegional, LocalDate dataReferencia, int
 		+ "		WHERE "
 		+ "		 	A.ID_REGIONAL = ?1 "
 		+ "			AND A.DT_ANO_MES_REF = ?2 "
-		+ "			AND B.CD_GRUPO_FATURAMENTO = ?3 ", nativeQuery = true)
-public int getQtdImportado(Long idRegional, LocalDate dataReferencia, int grupoFaturamento);
+		+ "			AND B.CD_GRUPO_FATURAMENTO = ?3 "
+		+ "			AND LEFT(A.NM_ARQUIVO, 4) = (CASE WHEN A.ID_REGIONAL = 1 AND 'N' = ?4 THEN 'LRMS' "
+		+ "		WHEN A.ID_REGIONAL = 1 AND 'S' = ?4 THEN 'L12R' WHEN A.ID_REGIONAL = 1 AND 'R' = ?4 THEN 'RRMS' "
+		+ "		WHEN A.ID_REGIONAL = 2 AND 'N' = ?4 THEN 'LV. ' WHEN A.ID_REGIONAL = 2 AND 'S' = ?4 THEN 'L12V' "
+		+ "		WHEN A.ID_REGIONAL = 2 AND 'R' = ?4 THEN 'RV. ' ELSE ' ' END)", nativeQuery = true)
+public int getQtdImportado(Long idRegional, LocalDate dataReferencia, int grupoFaturamento, String tipoLeitura);
 
 @Transactional
 @Query(value = "SELECT "
@@ -49,8 +53,9 @@ public int getQtdImportado(Long idRegional, LocalDate dataReferencia, int grupoF
 		+ "		 	B.ID_REGIONAL = ?1 "
 		+ "			AND B.DT_ANO_MES_REF = ?2 "
 		+ "			AND C.CD_GRUPO_FATURAMENTO = ?3 "
-		+ "			AND D.FL_EXPORTADO = 1 AND D.FL_ATIVO = 1", nativeQuery = true)
-public int getQtdExportado(Long idRegional, LocalDate dataReferencia, int grupoFaturamento);
+		+ "			AND D.FL_EXPORTADO = 1 AND D.FL_ATIVO = 1 "
+		+ "			AND A.ST_TIPOLEITURA = ?4 ", nativeQuery = true)
+public int getQtdExportado(Long idRegional, LocalDate dataReferencia, int grupoFaturamento, String tipoLeitura);
 
 @Transactional
 @Query(value = "SELECT "

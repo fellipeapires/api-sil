@@ -70,6 +70,9 @@ public class ExportacaoService implements IExportacaoService {
 	
 	@Override
 	public List<Exportacao> pesquisar(ExportacaoFilter filter) {
+		if (filter.getGrupoFaturamento() != null) {			
+			filter.setIdGrupoFaturamento(this.grupoFaturamentoService.findByCodigo(filter.getGrupoFaturamento()).get().getId());
+		}
 		return this.exportacaoRepository.pesquisar(filter);
 	}
 	
@@ -77,14 +80,11 @@ public class ExportacaoService implements IExportacaoService {
 		int qtdExportacao = 0;
 		LocalDateTime dataExportacao = LocalDateTime.now(ZoneId.of("America/Sao_Paulo"));
 		System.out.println("Data Inicio Exportacao: " + dataExportacao);
-		
 		GrupoFaturamento grupoFaturamento = this.grupoFaturamentoService.findByCodigo(filter.getGrupoFaturamento()).get();
 		Usuario usuario = this.usuarioService.buscarPorId(filter.getIdUsuario());
 		Regional regional = this.regionalService.buscarPorId(filter.getIdRegional());
 		List<Long> listaIdRetornoLeitura = new ArrayList<>();
-		
 		String cabecarioArquivo = this.exportacaoRepository.getCabecarioArquivo(filter.getIdRegional(), filter.getDataReferencia(), filter.getGrupoFaturamento(), filter.getTipoLeitura());
-		
 		List<RetornoLeituraExportacaoProjection> listaRetorno = this.retornoLeituraService.getRetornoLeituraExportacao(filter.getIdRegional(), filter.getDataReferencia(), filter.getGrupoFaturamento(), filter.getTipoLeitura(), filter.getIsDataFim());
 		String nomeArquivo = "";
 		
@@ -196,8 +196,8 @@ public class ExportacaoService implements IExportacaoService {
 					arquivoExportacao.close();
 					dataExportacao = LocalDateTime.now(ZoneId.of("America/Sao_Paulo"));
 					System.out.println("Data Fim Exportacao: " + dataExportacao + " - qtd: " + qtdExportacao);
-					int qtdImportado = this.exportacaoRepository.getQtdImportado(filter.getIdRegional(), filter.getDataReferencia(), filter.getGrupoFaturamento());
-					int qtdExportado = this.exportacaoRepository.getQtdExportado(filter.getIdRegional(), filter.getDataReferencia(), filter.getGrupoFaturamento());
+					int qtdImportado = this.exportacaoRepository.getQtdImportado(filter.getIdRegional(), filter.getDataReferencia(), filter.getGrupoFaturamento(), filter.getTipoLeitura());
+					int qtdExportado = this.exportacaoRepository.getQtdExportado(filter.getIdRegional(), filter.getDataReferencia(), filter.getGrupoFaturamento(), filter.getTipoLeitura());
 					//int qtdNaoExportado = this.exportacaoRepository.getQtdNaoExportado(filter.getIdRegional(), filter.getDataReferencia(), filter.getGrupoFaturamento());
 					exportacaoSalva.setObservacao("Exportado com sucesso!");
 					exportacaoSalva.setQtdExportacao(qtdExportacao);
