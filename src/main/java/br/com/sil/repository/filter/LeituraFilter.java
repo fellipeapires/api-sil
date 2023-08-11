@@ -19,6 +19,7 @@ public class LeituraFilter {
 	private Long idRegional;
 	private Integer grupoFaturamento;
 	private String tarefa;
+	private String tarefaEntrega;
 	private String instalacao;
 	private String medidor;
 	private Boolean isFoto;

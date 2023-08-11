@@ -62,6 +62,9 @@ public class LeituraRepositoryImpl implements LeituraRepositoryQuery {
 		if (filter.getTarefa() != null) {
 			predicates.add(builder.equal(root.get(Leitura_.tarefaLeitura), filter.getTarefa()));
 		}
+		if (filter.getTarefaEntrega() != null) {
+			predicates.add(builder.equal(root.get(Leitura_.tarefaEntrega), filter.getTarefaEntrega()));
+		}
 		if (filter.getInstalacao() != null) {
 			predicates.add(builder.like(builder.upper(root.get(Leitura_.instalacao)), "%" + filter.getInstalacao()));
 		}
