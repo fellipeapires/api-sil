@@ -19,6 +19,9 @@ public class LeituraDto {
 	private Integer grupoFaturamento;
 	private String tarefaLeitura;
 	private String tarefaEntrega;
+	private String endereco;
+	private String numero;
+	private int opcaoAlteracaoTarefa;
 	
 	
 	@JsonFormat(pattern = "yyyy-MM-dd", shape = JsonFormat.Shape.STRING)

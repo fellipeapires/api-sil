@@ -87,5 +87,11 @@ public class LeituraResource implements ILeituraResource {
 		int qtdAlterado = this.leituraService.alterarTarefa(entity);
 		return new ResponseEntity<Integer>(qtdAlterado, HttpStatus.OK);
 	}
+	
+	@PutMapping("/alterartarefaporendereco")
+	public ResponseEntity<?> alterarTarefaPorEndereco(@RequestBody LeituraDto entity) {
+		int qtdAlterado = this.leituraService.alterarTarefaPorEndereco(entity);
+		return new ResponseEntity<Integer>(qtdAlterado, HttpStatus.OK);
+	}
 
 }
