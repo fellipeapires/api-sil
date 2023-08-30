@@ -3,6 +3,7 @@ package br.com.sil.service;
 import java.io.FileInputStream;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -75,7 +76,7 @@ public class ImportacaoService implements IImportacaoService {
 		Usuario usuario = this.usuarioService.buscarPorId(idUsuario);
 		Regional regional = this.regionalService.buscarPorId(idRegional);
 		
-		LocalDateTime calInicio = LocalDateTime.now();
+		LocalDateTime calInicio = LocalDateTime.now(ZoneId.of("America/Sao_Paulo"));
 		System.out.println("Data Inicio Importacao: " + calInicio);
 
 		Importacao importacaoSalva = null;
@@ -251,7 +252,7 @@ public class ImportacaoService implements IImportacaoService {
 			System.out.println("Mensagem " + e.getMessage());
 			return false;
 		}
-		LocalDateTime calFim = LocalDateTime.now();
+		LocalDateTime calFim = LocalDateTime.now(ZoneId.of("America/Sao_Paulo"));
 		System.out.println("Data Final Importacao: " + calFim + " - qtd: " + qtdImportada);
 		return true;
 	}
