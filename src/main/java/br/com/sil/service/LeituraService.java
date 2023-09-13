@@ -75,11 +75,11 @@ public class LeituraService implements ILeituraService {
 	
 	public int alterarTarefaPorEndereco(LeituraDto entity) {
 		if (entity.getOpcaoAlteracaoTarefa() == 1) {
-			return this.leituraRepository.setTarefaLeituraPorEndereco(entity.getIdRegional(), entity.getDataReferencia(), entity.getGrupoFaturamento(), entity.getEndereco(), entity.getNumero(), entity.getTarefaLeitura());
+			return this.leituraRepository.setTarefaLeituraPorEndereco(entity.getIdRegional(), entity.getDataReferencia(), entity.getGrupoFaturamento(), entity.getEndereco(), entity.getNumero(), entity.getTarefaLeitura(), entity.getIsTarefa());
 		} else if (entity.getOpcaoAlteracaoTarefa() == 2) {
-			return this.leituraRepository.setTarefaEntregaPorEndereco(entity.getIdRegional(), entity.getDataReferencia(), entity.getGrupoFaturamento(), entity.getEndereco(), entity.getNumero(), entity.getTarefaEntrega());
+			return this.leituraRepository.setTarefaEntregaPorEndereco(entity.getIdRegional(), entity.getDataReferencia(), entity.getGrupoFaturamento(), entity.getEndereco(), entity.getNumero(), entity.getTarefaEntrega(), entity.getIsTarefa());
 		} else if (entity.getOpcaoAlteracaoTarefa() ==3) {
-			return this.leituraRepository.setTarefaLeituraEntregaPorEndereco(entity.getIdRegional(), entity.getDataReferencia(), entity.getGrupoFaturamento(), entity.getEndereco(), entity.getNumero(), entity.getTarefaLeitura(), entity.getTarefaEntrega());
+			return this.leituraRepository.setTarefaLeituraEntregaPorEndereco(entity.getIdRegional(), entity.getDataReferencia(), entity.getGrupoFaturamento(), entity.getEndereco(), entity.getNumero(), entity.getTarefaLeitura(), entity.getTarefaEntrega(), entity.getIsTarefa());
 		} else {
 			return 0;
 		}

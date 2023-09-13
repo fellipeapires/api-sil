@@ -112,9 +112,10 @@ public interface LeituraRepository extends JpaRepository<Leitura, Long>, Leitura
 			+ "INNER JOIN MED_GRUPO_FATURAMENTO AS D ON D.ID_GRUPO_FATURAMENTO = A.ID_GRUPO_FATURAMENTO "
 			+ "LEFT OUTER JOIN MED_DISTRIBUICAO_LEITURA_REGISTRO AS C ON C.ID_LEITURA = B.ID_LEITURA "
 			+ "WHERE A.ID_REGIONAL = ?1 AND A.DT_ANO_MES_REF = ?2 AND D.CD_GRUPO_FATURAMENTO = ?3 "
-			+ "AND LTRIM(RTRIM(LEFT(B.NM_ENDERECO,62))) = ?4 AND LTRIM(RTRIM(SUBSTRING(B.NM_ENDERECO,62,10))) = ISNULL(?5, LTRIM(RTRIM(SUBSTRING(B.NM_ENDERECO,62,10)))) AND C.ID_LEITURA IS NULL "
+			+ "AND LTRIM(RTRIM(LEFT(B.NM_ENDERECO,62))) = ?4 AND LTRIM(RTRIM(SUBSTRING(B.NM_ENDERECO,62,10))) = ISNULL(?5, LTRIM(RTRIM(SUBSTRING(B.NM_ENDERECO,62,10)))) "
+			+ "AND B.CD_TAREFA_LEITURA = ISNULL((CASE WHEN ?8 = 0 THEN NULL ELSE '9999' END), B.CD_TAREFA_LEITURA) AND B.CD_TAREFA_ENTREGA = ISNULL((CASE WHEN ?8 = 0 THEN NULL ELSE '9999' END), B.CD_TAREFA_ENTREGA) AND C.ID_LEITURA IS NULL "
 			+ "GROUP BY B.ID_LEITURA) SELECT @@ROWCOUNT", nativeQuery = true)
-	public int setTarefaLeituraEntregaPorEndereco(Long idRegional, LocalDate dataReferencia, int grupoFaturamento, String endereco, String numero, String tarefaLeitura, String tarefaEntrega);
+	public int setTarefaLeituraEntregaPorEndereco(Long idRegional, LocalDate dataReferencia, int grupoFaturamento, String endereco, String numero, String tarefaLeitura, String tarefaEntrega, int isTarefa);
 	
 	@Modifying
 	@Transactional
@@ -125,9 +126,10 @@ public interface LeituraRepository extends JpaRepository<Leitura, Long>, Leitura
 			+ "INNER JOIN MED_GRUPO_FATURAMENTO AS D ON D.ID_GRUPO_FATURAMENTO = A.ID_GRUPO_FATURAMENTO "
 			+ "LEFT OUTER JOIN MED_DISTRIBUICAO_LEITURA_REGISTRO AS C ON C.ID_LEITURA = B.ID_LEITURA "
 			+ "WHERE A.ID_REGIONAL = ?1 AND A.DT_ANO_MES_REF = ?2 AND D.CD_GRUPO_FATURAMENTO = ?3 "
-			+ "AND LTRIM(RTRIM(LEFT(B.NM_ENDERECO,62))) = ?4 AND LTRIM(RTRIM(SUBSTRING(B.NM_ENDERECO,62,10))) = ISNULL(?5, LTRIM(RTRIM(SUBSTRING(B.NM_ENDERECO,62,10)))) AND C.ID_LEITURA IS NULL "
+			+ "AND LTRIM(RTRIM(LEFT(B.NM_ENDERECO,62))) = ?4 AND LTRIM(RTRIM(SUBSTRING(B.NM_ENDERECO,62,10))) = ISNULL(?5, LTRIM(RTRIM(SUBSTRING(B.NM_ENDERECO,62,10)))) "
+			+ "AND B.CD_TAREFA_LEITURA = ISNULL((CASE WHEN ?7 = 0 THEN NULL ELSE '9999' END), B.CD_TAREFA_LEITURA) AND C.ID_LEITURA IS NULL "
 			+ "GROUP BY B.ID_LEITURA) SELECT @@ROWCOUNT", nativeQuery = true)
-	public int setTarefaLeituraPorEndereco(Long idRegional, LocalDate dataReferencia, int grupoFaturamento, String endereco, String numero, String tarefaLeitura);
+	public int setTarefaLeituraPorEndereco(Long idRegional, LocalDate dataReferencia, int grupoFaturamento, String endereco, String numero, String tarefaLeitura, int isTarefa);
 	
 	@Modifying
 	@Transactional
@@ -138,9 +140,10 @@ public interface LeituraRepository extends JpaRepository<Leitura, Long>, Leitura
 			+ "INNER JOIN MED_GRUPO_FATURAMENTO AS D ON D.ID_GRUPO_FATURAMENTO = A.ID_GRUPO_FATURAMENTO "
 			+ "LEFT OUTER JOIN MED_DISTRIBUICAO_LEITURA_REGISTRO AS C ON C.ID_LEITURA = B.ID_LEITURA "
 			+ "WHERE A.ID_REGIONAL = ?1 AND A.DT_ANO_MES_REF = ?2 AND D.CD_GRUPO_FATURAMENTO = ?3 "
-			+ "AND LTRIM(RTRIM(LEFT(B.NM_ENDERECO,62))) = ?4 AND LTRIM(RTRIM(SUBSTRING(B.NM_ENDERECO,62,10))) = ISNULL(?5, LTRIM(RTRIM(SUBSTRING(B.NM_ENDERECO,62,10)))) AND C.ID_LEITURA IS NULL "
+			+ "AND LTRIM(RTRIM(LEFT(B.NM_ENDERECO,62))) = ?4 AND LTRIM(RTRIM(SUBSTRING(B.NM_ENDERECO,62,10))) = ISNULL(?5, LTRIM(RTRIM(SUBSTRING(B.NM_ENDERECO,62,10)))) "
+			+ "AND B.CD_TAREFA_ENTREGA = ISNULL((CASE WHEN ?7 = 0 THEN NULL ELSE '9999' END), B.CD_TAREFA_ENTREGA) AND C.ID_LEITURA IS NULL "
 			+ "GROUP BY B.ID_LEITURA) SELECT @@ROWCOUNT", nativeQuery = true)
-	public int setTarefaEntregaPorEndereco(Long idRegional, LocalDate dataReferencia, int grupoFaturamento, String endereco, String numero, String tarefaEntrega);
+	public int setTarefaEntregaPorEndereco(Long idRegional, LocalDate dataReferencia, int grupoFaturamento, String endereco, String numero, String tarefaEntrega, int isTarefa);
 	
 	/*
 	 @Modifying

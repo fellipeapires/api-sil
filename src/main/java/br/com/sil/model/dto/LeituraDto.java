@@ -22,6 +22,7 @@ public class LeituraDto {
 	private String endereco;
 	private String numero;
 	private int opcaoAlteracaoTarefa;
+	private int isTarefa;
 	
 	
 	@JsonFormat(pattern = "yyyy-MM-dd", shape = JsonFormat.Shape.STRING)

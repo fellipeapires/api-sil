@@ -19,7 +19,7 @@ public class ApiProperty {
 	private String pathExportacao = "/opt/jboss/wildfly/standalone/tmp/sil/exportacao/";
 	private String pathFoto = "/opt/jboss/wildfly/standalone/tmp/sil/fotos/";
 	private String urlProducao = "https://silgascomgas.grupofloripark.com.br";
-	private String versao = "1.3.0";
+	private String versao = "1.4.0";
 	
 	//private String pathImportacao = "/Users/fellipeaugustopires/Documents/SFTP/opt/jboss/wildfly/standalone/tmp/sil/importacao/";
 	//private String pathExportacao = "/Users/fellipeaugustopires/Documents/SFTP/opt/jboss/wildfly/standalone/tmp/sil/exportacao/";
