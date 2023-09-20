@@ -231,6 +231,8 @@ public class ImportacaoService implements IImportacaoService {
 						}
 						leitura.setFaixaMaxima(leitura.getUltimaLeitura() + ((leitura.getMedia3Meses() * percentual) / 100)); 
 						//this.leituraService.incluir(leitura);
+						leitura.setTarefaLeitura(leitura.getTarefaLeitura().trim().equals("") ? "9999" : leitura.getTarefaLeitura().trim());
+						leitura.setTarefaEntrega(leitura.getTarefaEntrega().trim().equals("") ? "9999" : leitura.getTarefaEntrega().trim());
 						listaLeitura.add(leitura);
 					}
 					
